@@ -1,0 +1,404 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Human Cycles — Design System
+   Supports dark (default) and light themes via [data-theme="light"] on <html>.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Dark theme (default) ───────────────────────────────────────────────── */
+
+:root {
+    /* Background layers */
+    --bg-deep: #060911;
+    --bg-primary: #0a0e1a;
+    --bg-surface: #111827;
+    --bg-elevated: #1a2234;
+    --bg-glass: rgba(17, 24, 39, 0.65);
+
+    /* Text */
+    --text-primary: #e8ecf4;
+    --text-secondary: #8892a8;
+    --text-muted: #556178;
+    --text-accent: #d4a853;
+
+    /* Solar accents — gold / amber */
+    --solar-50: #fdf8ef;
+    --solar-200: #f5dfa6;
+    --solar-400: #d4a853;
+    --solar-500: #c9952e;
+    --solar-600: #a87a1f;
+    --solar-glow: rgba(212, 168, 83, 0.25);
+
+    /* Lunar accents — silver / blue */
+    --lunar-200: #c9d6e8;
+    --lunar-400: #8ba4c7;
+    --lunar-500: #6b8bb5;
+    --lunar-glow: rgba(139, 164, 199, 0.2);
+
+    /* Band colors */
+    --band-beginning: #34d399;
+    --band-beginning-bg: rgba(52, 211, 153, 0.12);
+    --band-middle: #fbbf24;
+    --band-middle-bg: rgba(251, 191, 36, 0.12);
+    --band-end: #f97316;
+    --band-end-bg: rgba(249, 115, 22, 0.12);
+    --band-threshold: #a855f7;
+    --band-threshold-bg: rgba(168, 85, 247, 0.12);
+    --band-rest: #64748b;
+    --band-rest-bg: rgba(100, 116, 139, 0.08);
+
+    /* Meta-season colors */
+    --growth: #34d399;
+    --growth-bg: rgba(52, 211, 153, 0.1);
+    --peak: #fbbf24;
+    --peak-bg: rgba(251, 191, 36, 0.1);
+    --decline: #f59e0b;
+    --decline-bg: rgba(245, 158, 11, 0.1);
+
+    /* Borders */
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-medium: rgba(255, 255, 255, 0.1);
+    --border-accent: rgba(212, 168, 83, 0.3);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+    --shadow-glow-solar: 0 0 20px rgba(212, 168, 83, 0.15);
+    --shadow-glow-lunar: 0 0 20px rgba(139, 164, 199, 0.15);
+
+    /* Typography */
+    --font-body: "Inter", system-ui, -apple-system, sans-serif;
+    --font-display: "Outfit", system-ui, -apple-system, sans-serif;
+
+    /* Radii */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+
+    /* Transitions */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* ── Adaptive overlay variables (dark mode: white alphas) ── */
+    --text-dim-50: rgba(255, 255, 255, 0.5);
+    --text-dim-45: rgba(255, 255, 255, 0.45);
+    --text-dim-40: rgba(255, 255, 255, 0.4);
+    --text-dim-35: rgba(255, 255, 255, 0.35);
+    --text-dim-30: rgba(255, 255, 255, 0.3);
+    --text-dim-25: rgba(255, 255, 255, 0.25);
+    --text-dim-20: rgba(255, 255, 255, 0.2);
+    --text-dim-15: rgba(255, 255, 255, 0.15);
+    --text-dim-10: rgba(255, 255, 255, 0.1);
+
+    /* Adaptive surface overlays */
+    --surface-2: rgba(255, 255, 255, 0.02);
+    --surface-3: rgba(255, 255, 255, 0.03);
+    --surface-4: rgba(255, 255, 255, 0.04);
+    --surface-6: rgba(255, 255, 255, 0.06);
+    --surface-8: rgba(255, 255, 255, 0.08);
+    --surface-10: rgba(255, 255, 255, 0.1);
+
+    /* Adaptive UI element colors */
+    --input-text: #e8ecf4;
+    --input-bg: rgba(255, 255, 255, 0.04);
+    --input-border: rgba(255, 255, 255, 0.1);
+    --tab-bar-bg: rgba(10, 14, 26, 0.92);
+    --tab-bar-border: rgba(255, 255, 255, 0.06);
+    --tab-inactive: rgba(255, 255, 255, 0.4);
+    --color-scheme: dark;
+}
+
+/* ─── Light theme overrides ──────────────────────────────────────────────── */
+
+[data-theme="light"] {
+    /* Background layers */
+    --bg-deep: #eef2fb;
+    --bg-primary: #f4f7fd;
+    --bg-surface: #e8edf7;
+    --bg-elevated: #dde4f0;
+    --bg-glass: rgba(244, 247, 253, 0.88);
+
+    /* Text */
+    --text-primary: #1a2034;
+    --text-secondary: #4a5568;
+    --text-muted: #6b7990;
+    --text-accent: #b07820;
+
+    /* Solar accents — slightly deeper for contrast on light bg */
+    --solar-50: #fdf8ef;
+    --solar-200: #e8c060;
+    --solar-400: #b07820;
+    --solar-500: #996510;
+    --solar-600: #7a500a;
+    --solar-glow: rgba(176, 120, 32, 0.2);
+
+    /* Lunar accents */
+    --lunar-200: #7090b8;
+    --lunar-400: #4a6d9c;
+    --lunar-500: #3a5a88;
+    --lunar-glow: rgba(74, 109, 156, 0.15);
+
+    /* Borders */
+    --border-subtle: rgba(0, 0, 0, 0.07);
+    --border-medium: rgba(0, 0, 0, 0.12);
+    --border-accent: rgba(176, 120, 32, 0.35);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
+    --shadow-glow-solar: 0 0 20px rgba(176, 120, 32, 0.12);
+    --shadow-glow-lunar: 0 0 20px rgba(74, 109, 156, 0.12);
+
+    /* ── Adaptive overlay variables (light mode: dark alphas) ── */
+    --text-dim-50: rgba(0, 0, 0, 0.6);
+    --text-dim-45: rgba(0, 0, 0, 0.55);
+    --text-dim-40: rgba(0, 0, 0, 0.5);
+    --text-dim-35: rgba(0, 0, 0, 0.45);
+    --text-dim-30: rgba(0, 0, 0, 0.4);
+    --text-dim-25: rgba(0, 0, 0, 0.35);
+    --text-dim-20: rgba(0, 0, 0, 0.3);
+    --text-dim-15: rgba(0, 0, 0, 0.25);
+    --text-dim-10: rgba(0, 0, 0, 0.18);
+
+    /* Adaptive surface overlays */
+    --surface-2: rgba(0, 0, 0, 0.02);
+    --surface-3: rgba(0, 0, 0, 0.02);
+    --surface-4: rgba(0, 0, 0, 0.03);
+    --surface-6: rgba(0, 0, 0, 0.05);
+    --surface-8: rgba(0, 0, 0, 0.06);
+    --surface-10: rgba(0, 0, 0, 0.08);
+
+    /* Adaptive UI element colors */
+    --input-text: #1a2034;
+    --input-bg: rgba(0, 0, 0, 0.04);
+    --input-border: rgba(0, 0, 0, 0.15);
+    --tab-bar-bg: rgba(232, 237, 247, 0.95);
+    --tab-bar-border: rgba(0, 0, 0, 0.08);
+    --tab-inactive: rgba(0, 0, 0, 0.45);
+    --color-scheme: light;
+}
+
+/* ─── Reset & Base ──────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--bg-deep);
+    min-height: 100dvh;
+    overflow-x: hidden;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Starfield / ambient background */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(
+            ellipse at 20% 50%,
+            rgba(139, 164, 199, 0.04) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse at 80% 20%,
+            rgba(212, 168, 83, 0.03) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            ellipse at 50% 80%,
+            rgba(168, 85, 247, 0.02) 0%,
+            transparent 50%
+        );
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.3s ease;
+}
+
+[data-theme="light"] body::before {
+    background:
+        radial-gradient(
+            ellipse at 20% 50%,
+            rgba(74, 109, 156, 0.05) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse at 80% 20%,
+            rgba(176, 120, 32, 0.04) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            ellipse at 50% 80%,
+            rgba(139, 100, 200, 0.03) 0%,
+            transparent 50%
+        );
+}
+
+#root {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    min-height: 100dvh;
+}
+
+/* ─── Typography ────────────────────────────────────────────────────────── */
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(
+        135deg,
+        var(--solar-200),
+        var(--solar-400),
+        var(--lunar-400)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+h2 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+/* ─── Glass Panel ───────────────────────────────────────────────────────── */
+
+.glass-panel {
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.glass-panel--elevated {
+    background: var(--bg-elevated);
+    border-color: var(--border-medium);
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes subtle-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-in {
+    animation: fadeIn 0.6s var(--ease-out) both;
+}
+
+.animate-in-delay-1 {
+    animation-delay: 0.1s;
+}
+.animate-in-delay-2 {
+    animation-delay: 0.2s;
+}
+.animate-in-delay-3 {
+    animation-delay: 0.3s;
+}
+.animate-in-delay-4 {
+    animation-delay: 0.4s;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ─── Responsive ────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+    h2 {
+        font-size: 1.1rem;
+    }
+    #root {
+        padding: 0 12px;
+    }
+}

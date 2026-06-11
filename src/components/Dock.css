@@ -1,0 +1,80 @@
+.dock-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 12px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.dock-panel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-radius: 28px;
+  pointer-events: auto;
+  box-shadow: var(--shadow-lg);
+  transition: background 0.3s ease, border-color 0.3s ease;
+  overflow: visible;
+}
+
+.dock-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  padding-bottom: 8px;
+}
+
+.dock-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: var(--surface-8);
+  color: var(--tab-inactive);
+  transition: background 0.2s, color 0.2s;
+  overflow: hidden;
+  position: relative;
+}
+
+.dock-item.active {
+  background: var(--solar-glow);
+  color: var(--solar-400);
+}
+
+.dock-item svg {
+  width: 55%;
+  height: 55%;
+}
+
+.dock-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--tab-inactive);
+  letter-spacing: 0.3px;
+  transition: color 0.2s;
+}
+
+.dock-label.active {
+  color: var(--solar-400);
+}
+
+/* Hover effects */
+.dock-item:hover {
+  background: var(--surface-10);
+  color: var(--text-primary);
+}
+
+.dock-item.active:hover {
+  background: var(--solar-glow);
+  color: var(--solar-400);
+}
