@@ -1,6 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { Reading } from "../engine/types";
-import { getThirteenMoonReading } from "../engine/thirteenMoon";
 import {
   BREATH_PHASE_LABELS,
   DAY_SEGMENT_COLORS,
@@ -47,7 +46,6 @@ export default function TodayDashboard({
   dawnInfo,
 }: TodayDashboardProps) {
   const { dayClock, solarYear, earthMonth, moonClock } = reading;
-  const thirteenMoon = getThirteenMoonReading(selectedDate);
   const seasonColor = META_SEASON_COLORS[solarYear.metaSeason];
   const dayColor = DAY_SEGMENT_COLORS[dayClock.segment];
   const moonColor = LUNAR_SEGMENT_COLORS[moonClock.segment];
@@ -79,13 +77,7 @@ export default function TodayDashboard({
             <i aria-hidden="true" />
             <span>{BREATH_PHASE_LABELS[solarYear.breathPhase]}</span>
             <i aria-hidden="true" />
-            <span>
-              {thirteenMoon.isDayOutOfTime
-                ? "Day Out of Time"
-                : thirteenMoon.moon === null
-                  ? "0.0 Hunab Ku"
-                  : `Moon ${thirteenMoon.moon} · Day ${thirteenMoon.day}`}
-            </span>
+            <span>Month {solarYear.month} of 9</span>
           </div>
 
           <div className="hero-date-control">

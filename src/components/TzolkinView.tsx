@@ -60,8 +60,8 @@ export default function TzolkinView({
         <span className="eyebrow">The sacred 260-day count</span>
         <h1 id="tzolkin-title">Tzolk’in</h1>
         <p>
-          Thirteen galactic tones and twenty solar seals turning as one continuous round —
-          and the 13-Moon year they drive.
+          Thirteen galactic tones and twenty solar seals turning as one continuous round, and the
+          13-Moon year of 13 × 28 days that runs beside it. A calendar and clock of its own.
         </p>
       </div>
 
@@ -183,7 +183,7 @@ export default function TzolkinView({
           </article>
 
           <article className="tz-panel">
-            <span className="galactic-label">The 13-Moon year</span>
+            <span className="galactic-label">The 13-Moon year · moon {moon.moon ?? "—"} of 13</span>
             {moon.moon === null ? (
               <p className="galactic-gloss">
                 {moon.isDayOutOfTime
@@ -223,13 +223,17 @@ export default function TzolkinView({
 
       <section className="tzolkin-legend" aria-labelledby="sign-legend-title">
         <div>
-          <span className="eyebrow">Twenty stations</span>
+          <span className="eyebrow">Twenty stations of the 260-day round</span>
           <h2 id="sign-legend-title">Solar seal sequence</h2>
+          <p className="tzolkin-legend__note">
+            These are the twenty solar seals of the Tzolk’in. Seal 9 is named Moon — a day sign,
+            not a month of the 13-Moon year.
+          </p>
         </div>
         <ol>
           {SOLAR_SEALS.map((seal, index) => (
             <li className={index === (kin.seal ?? 0) - 1 ? "is-active" : ""} key={seal}>
-              <span>{String(index + 1).padStart(2, "0")}</span> {seal}
+              <span>Seal {index + 1}</span> {seal}
             </li>
           ))}
         </ol>
@@ -262,9 +266,9 @@ export default function TzolkinView({
       <aside className="tzolkin-correlation">
         <strong>Conversion note</strong>
         <p>
-          The wheels and readings above follow the Dreamspell count, so they agree with the 13-Moon
-          date shown on Today. The traditional count quoted in the notes uses the scholarly GMT
-          correlation constant 584283; other correlations—and counts maintained by living
+          This view is a self-contained calendar: the 260-day Tzolk’in round and the 13-Moon year
+          it drives, and nothing else. The traditional count quoted in the notes uses the scholarly
+          GMT correlation constant 584283; other correlations—and counts maintained by living
           communities—can produce a different Gregorian mapping.
         </p>
       </aside>
