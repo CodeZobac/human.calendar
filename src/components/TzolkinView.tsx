@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import { TZOLKIN_DAY_SIGNS, type TzolkinReading } from "../engine/tzolkin";
+import TzolkinWheel from "./TzolkinWheel";
 import "./TzolkinView.css";
 
 export type TzolkinMotion = "previous" | "next" | "jump";
@@ -14,11 +15,6 @@ interface TzolkinViewProps {
   onDateChange: (value: string) => void;
   onToday: () => void;
 }
-
-const point = (cx: number, cy: number, radius: number, degrees: number) => {
-  const radians = degrees * Math.PI / 180;
-  return { x: cx + Math.cos(radians) * radius, y: cy + Math.sin(radians) * radius };
-};
 
 export default function TzolkinView({
   reading, date, isToday, motion, onPrevious, onNext, onDateChange, onToday,
@@ -38,46 +34,7 @@ export default function TzolkinView({
 
       <div className="tzolkin-instrument">
         <div className={`tzolkin-stage motion-${motion}`} key={`${reading.gregorianDate}-${motion}`}>
-          <svg viewBox="0 0 620 390" role="img" aria-labelledby="tz-wheel-title tz-wheel-desc">
-            <title id="tz-wheel-title">{reading.coefficient} {reading.daySign}, day {reading.position} of 260</title>
-            <desc id="tz-wheel-desc">Two interlocking wheels show thirteen number coefficients and twenty Maya day signs. Their active values meet at the center contact point.</desc>
-            <path className="tz-orbit-rule" d="M42 195H578" />
-            <g className="tz-wheel tz-number-wheel" style={{ "--wheel-angle": `${-(reading.coefficient - 1) * (360 / 13)}deg` } as React.CSSProperties}>
-              <circle cx="174" cy="195" r="103" className="tz-wheel__body" />
-              {Array.from({ length: 13 }, (_, index) => {
-                const p = point(174, 195, 103, index * 360 / 13);
-                return <g key={index} transform={`translate(${p.x} ${p.y})`}>
-                  <circle r="18" className="tz-tooth" aria-hidden="true" />
-                  <text className="tz-number" textAnchor="middle" dominantBaseline="central">{index + 1}</text>
-                </g>;
-              })}
-            </g>
-            <g className="tz-wheel tz-sign-wheel" style={{ "--wheel-angle": `${180 - reading.daySignIndex * 18}deg` } as React.CSSProperties}>
-              <circle cx="444" cy="195" r="145" className="tz-wheel__body tz-wheel__body--sign" />
-              {TZOLKIN_DAY_SIGNS.map((sign, index) => {
-                const p = point(444, 195, 145, index * 18);
-                return <g key={sign} transform={`translate(${p.x} ${p.y})`}>
-                  <circle r="13" className="tz-tooth tz-tooth--sign" aria-hidden="true" />
-                  <circle r="4" className="tz-sign-dot" />
-                </g>;
-              })}
-            </g>
-            <g className="tz-sign-names" aria-hidden="true">
-              {TZOLKIN_DAY_SIGNS.map((sign, index) => {
-                const activeAngle = 180 - reading.daySignIndex * 18;
-                const p = point(444, 195, 174, index * 18 + activeAngle);
-                return <text
-                  key={sign}
-                  x={p.x}
-                  y={p.y}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  className={index === reading.daySignIndex ? "is-active" : ""}
-                >{sign}</text>;
-              })}
-            </g>
-            <circle cx="309" cy="195" r="7" className="tz-contact" aria-hidden="true" />
-          </svg>
+          <TzolkinWheel reading={reading} />
         </div>
 
         <div className="tzolkin-reading" aria-live="polite">

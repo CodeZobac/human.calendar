@@ -15,18 +15,28 @@
 .tzolkin-stage { grid-area: stage; display: grid; place-items: center; min-width: 0; }
 .tzolkin-stage svg { display: block; width: 100%; height: auto; overflow: visible; }
 .tz-orbit-rule { stroke: var(--tzolkin-rule); stroke-width: 1; stroke-dasharray: 3 8; }
-.tz-wheel { transform-box: view-box; transform-origin: center; }
-.tz-number-wheel { transform-origin: 174px 195px; transform: rotate(var(--wheel-angle)); }
-.tz-sign-wheel { transform-origin: 444px 195px; transform: rotate(var(--wheel-angle)); }
-.tz-wheel__body { fill: var(--tzolkin-number-fill); stroke: var(--tzolkin-number); stroke-width: 1.5; }
-.tz-wheel__body--sign { fill: var(--tzolkin-sign-fill); stroke: var(--tzolkin-sign); }
-.tz-tooth { fill: var(--tzolkin-surface); stroke: var(--tzolkin-number); stroke-width: 1.5; }
-.tz-tooth--sign { stroke: var(--tzolkin-sign); }
-.tz-number { fill: var(--text-primary); font: 700 13px var(--font-body); font-variant-numeric: tabular-nums; }
-.tz-sign-dot { fill: var(--tzolkin-sign); }
-.tz-sign-names text { fill: var(--text-muted); font: 600 9px var(--font-body); }
-.tz-sign-names text.is-active { fill: var(--tzolkin-sign); font-size: 11px; }
-.tz-contact { fill: var(--tzolkin-contact); filter: drop-shadow(0 0 8px var(--tzolkin-contact)); }
+.tz-wheel { transform-box: view-box; will-change: transform; }
+.tz-number-wheel { transform-origin: 219px 195px; transform: rotate(var(--wheel-angle)); }
+.tz-sign-wheel { transform-origin: 450px 195px; transform: rotate(var(--wheel-angle)); }
+.tz-gear { stroke-width: 1.5; stroke-linejoin: round; }
+.tz-gear--number { fill: var(--tzolkin-number-fill); stroke: var(--tzolkin-number); }
+.tz-gear--sign { fill: var(--tzolkin-sign-fill); stroke: var(--tzolkin-sign); }
+.tz-ring { fill: none; stroke: var(--tzolkin-rule); stroke-width: 1; stroke-dasharray: 2 7; }
+.tz-hub { fill: var(--tzolkin-surface); stroke: var(--tzolkin-rule); stroke-width: 1.25; }
+.tz-pin { fill: var(--text-muted); }
+.tz-upright { transform-box: fill-box; transform-origin: center; transform: rotate(calc(-1 * var(--wheel-angle))); }
+.tz-tooth-disc { fill: var(--tzolkin-surface); stroke: var(--tzolkin-number); stroke-width: 1; }
+.tz-tooth-disc.is-active { fill: var(--tzolkin-number); stroke: var(--tzolkin-number); }
+.tz-number { fill: var(--text-primary); font: 700 12px var(--font-body); font-variant-numeric: tabular-nums; }
+.tz-number.is-active { fill: var(--tzolkin-surface); }
+.tz-notch-active { fill: var(--tzolkin-sign-fill); stroke: var(--tzolkin-sign); stroke-width: 1.5; }
+.tz-sign-dot { fill: var(--tzolkin-sign); opacity: .55; }
+.tz-sign-dot.is-active { opacity: 1; }
+.tz-sign-name { fill: var(--text-muted); font: 600 9.5px var(--font-body); letter-spacing: .04em; transition: opacity 300ms ease; }
+.tz-sign-name.is-active { fill: var(--tzolkin-sign); }
+.tz-glow-stop { stop-color: var(--tzolkin-contact); }
+.tz-glow-stop--core { stop-opacity: .5; }
+.tz-glow-stop--edge { stop-opacity: 0; }
 .tzolkin-reading { grid-area: reading; align-self: end; border-left: 1px solid var(--tzolkin-rule); padding-left: 1.5rem; }
 .tzolkin-reading__date { color: var(--text-muted); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; }
 .tzolkin-reading__primary { display: flex; align-items: baseline; gap: .7rem; margin: .55rem 0 .15rem; }
@@ -78,7 +88,7 @@
   .tzolkin-page { padding-top: 2.5rem; }
   .tzolkin-instrument { padding: .75rem; }
   .tzolkin-stage svg { width: 108%; max-width: none; }
-  .tz-sign-names { display: none; }
+  .tz-sign-name { display: none; }
   .tzolkin-legend ol { grid-template-columns: repeat(2, 1fr); }
   .tzolkin-notes { grid-template-columns: 1fr; }
 }
