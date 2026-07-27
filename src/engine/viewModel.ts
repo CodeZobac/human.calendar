@@ -41,15 +41,15 @@ export const BREATH_PHASE_LABELS: Record<BreathPhase, string> = {
 };
 
 export const META_SEASON_LABELS: Record<NonaryMetaSeason, string> = {
-  growth: "Growth",
-  peak: "Peak",
-  decline: "Decline",
+  growth: "",
+  peak: "",
+  decline: "",
 };
 
 export const META_SEASON_EMOJIS: Record<NonaryMetaSeason, string> = {
-  growth: "🌱",
-  peak: "☀️",
-  decline: "🍂",
+  growth: "Growth",
+  peak: "Peak",
+  decline: "Decline",
 };
 
 export const EARTH_MONTH_SEGMENT_LABELS: Record<EarthMonthSegment, string> = {
@@ -67,23 +67,23 @@ export const LUNAR_SEGMENT_LABELS: Record<LunarSegment, string> = {
 // ─── Meta-season colors ────────────────────────────────────────────────────────
 
 export const META_SEASON_COLORS: Record<NonaryMetaSeason, string> = {
-  growth: "#34d399",
-  peak: "#fbbf24",
-  decline: "#f59e0b",
+  growth: "var(--color-growth)",
+  peak: "var(--color-peak)",
+  decline: "var(--color-decline)",
 };
 
 // ─── Segment colors ────────────────────────────────────────────────────────────
 
 export const DAY_SEGMENT_COLORS: Record<DaySegment, string> = {
-  dawn: "#f5c842",
-  day: "#60c5f5",
-  dusk: "#f5844a",
-  night: "#8ba4c7",
+  dawn: "var(--color-day-dawn)",
+  day: "var(--color-day-light)",
+  dusk: "var(--color-day-dusk)",
+  night: "var(--color-day-night)",
 };
 
 export const LUNAR_SEGMENT_COLORS: Record<LunarSegment, string> = {
-  "breath-in": "#c9d6e8",
-  "breath-out": "#6b8bb5",
+  "breath-in": "var(--color-cycle-in)",
+  "breath-out": "var(--color-cycle-out)",
 };
 
 // ─── Primary format strings ────────────────────────────────────────────────────

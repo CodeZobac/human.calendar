@@ -1,0 +1,121 @@
+/* Hallmark · genre: atmospheric · macrostructure: Map / Diagram · design-system: design.md · designed-as-app */
+.cycle-instrument {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.55fr) !important;
+  grid-template-areas:
+    "heading heading"
+    "diagram readout"
+    "legend readout";
+  align-items: center !important;
+  gap: var(--space-lg) clamp(var(--space-lg), 5vw, var(--space-2xl)) !important;
+  width: 100% !important;
+}
+
+.cycle-instrument > :first-child {
+  grid-area: heading;
+  align-self: end;
+  border-bottom: var(--rule-hair) solid var(--color-rule-2);
+  padding-block-end: var(--space-sm);
+}
+
+.cycle-instrument > :nth-child(2) {
+  grid-area: diagram;
+  width: min(100%, 38rem) !important;
+  justify-self: center;
+}
+
+.cycle-instrument > .glass-panel {
+  grid-area: readout;
+  align-self: stretch;
+  min-width: 0;
+  border: 0 !important;
+  border-inline-start: var(--rule-hair) solid var(--color-rule) !important;
+  border-radius: 0 !important;
+  background: var(--color-paper-2) !important;
+  box-shadow: none !important;
+}
+
+.cycle-instrument > :last-child {
+  grid-area: legend;
+}
+
+.cycle-instrument svg {
+  width: min(100%, 38rem);
+  height: auto;
+  overflow: visible;
+}
+
+.cycle-instrument text {
+  font-variant-numeric: tabular-nums;
+}
+
+.comparison-grid {
+  position: relative;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1fr);
+  gap: var(--space-md) !important;
+  padding: clamp(var(--space-md), 4vw, var(--space-xl)) !important;
+  background: var(--color-paper-2);
+}
+
+.comparison-grid > div:not(.comparison-divider) {
+  padding-inline: clamp(var(--space-xs), 2vw, var(--space-md)) !important;
+}
+
+.comparison-divider {
+  min-width: 0 !important;
+  padding-inline: var(--space-xs) !important;
+}
+
+.comparison-divider > span {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: 50%;
+  color: var(--color-accent) !important;
+}
+
+@media (max-width: 53.75rem) {
+  .cycle-instrument {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "heading"
+      "diagram"
+      "readout"
+      "legend";
+  }
+
+  .cycle-instrument > .glass-panel {
+    border-inline-start: 0 !important;
+    border-block-start: var(--rule-hair) solid var(--color-rule) !important;
+    padding-inline: 0 !important;
+  }
+}
+
+@media (max-width: 40rem) {
+  .cycle-instrument {
+    gap: var(--space-md) !important;
+  }
+
+  .cycle-instrument > :nth-child(2),
+  .cycle-instrument svg {
+    width: min(100%, 20rem) !important;
+  }
+
+  .comparison-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .comparison-divider {
+    flex-direction: row !important;
+    padding: 0 !important;
+  }
+
+  .comparison-divider > div {
+    width: auto !important;
+    height: var(--rule-hair) !important;
+    min-height: 0 !important;
+  }
+}

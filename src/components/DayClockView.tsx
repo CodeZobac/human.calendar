@@ -18,6 +18,7 @@ import {
   nonaryHoursToConventional,
 } from "../engine/viewModel";
 import type { DawnInfo } from "../services/geo";
+import "./CycleViews.css";
 
 interface DayClockViewProps {
   dayClock: DayClockReading;
@@ -127,7 +128,7 @@ export default function DayClockView({
   const py = CY + MID_R * Math.sin(pointerRad);
 
   return (
-    <div style={styles.container}>
+    <div className="cycle-instrument" style={styles.container}>
       <div style={styles.header}>
         <h2 style={styles.title}>Day Clock</h2>
         <span style={{ ...styles.badge, color: activeColor }}>
@@ -176,7 +177,7 @@ export default function DayClockView({
                 strokeWidth={isActive ? 1.5 : 0.5}
                 opacity={isActive ? 1 : 0.5}
                 filter={isActive ? "url(#dc-glow)" : undefined}
-                style={{ transition: "all 0.8s ease" }}
+                style={{ transition: "opacity var(--dur-long) var(--ease-out)" }}
               />
             );
           })}
@@ -208,7 +209,7 @@ export default function DayClockView({
                   dominantBaseline="central"
                   fill="var(--text-dim-40)"
                   fontSize={9}
-                  fontFamily="'Outfit', sans-serif"
+                  fontFamily="var(--font-display)"
                 >
                   {i + 1}
                 </text>
@@ -233,7 +234,7 @@ export default function DayClockView({
                 dominantBaseline="central"
                 fill={isActive ? color : color + "88"}
                 fontSize={isActive ? 9 : 7}
-                fontFamily="'Outfit', sans-serif"
+                fontFamily="var(--font-display)"
                 fontWeight={isActive ? 600 : 400}
               >
                 {DAY_SEGMENT_LABELS[seg.key]}
@@ -248,14 +249,14 @@ export default function DayClockView({
             r={10}
             fill={activeColor + "44"}
             filter="url(#dc-glow)"
-            style={{ transition: "all 1s cubic-bezier(0.16,1,0.3,1)" }}
+            style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
           <circle
             cx={px}
             cy={py}
             r={5}
             fill={activeColor}
-            style={{ transition: "all 1s cubic-bezier(0.16,1,0.3,1)" }}
+            style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
           <circle cx={px} cy={py} r={2} fill="white" />
 
@@ -267,7 +268,7 @@ export default function DayClockView({
             dominantBaseline="central"
             fill={activeColor}
             fontSize={28}
-            fontFamily="'Outfit', sans-serif"
+            fontFamily="var(--font-display)"
             fontWeight={700}
             style={{ filter: `drop-shadow(0 0 10px ${activeColor}99)` }}
           >
@@ -280,7 +281,7 @@ export default function DayClockView({
             dominantBaseline="central"
             fill="var(--text-dim-35)"
             fontSize={9}
-            fontFamily="'Inter', sans-serif"
+            fontFamily="var(--font-body)"
             letterSpacing="2"
           >
             H : M : S
@@ -292,7 +293,7 @@ export default function DayClockView({
             dominantBaseline="central"
             fill={activeColor}
             fontSize={12}
-            fontFamily="'Outfit', sans-serif"
+            fontFamily="var(--font-display)"
             fontWeight={500}
           >
             {activeLabel.toUpperCase()}
@@ -327,7 +328,7 @@ export default function DayClockView({
                 dawnInfo.sunrise,
                 dawnInfo.location.timezone,
               )}
-              valueColor="#f5c842"
+              valueColor="var(--color-solar)"
               hint={`${dawnInfo.location.city}, ${dawnInfo.location.countryCode} · ${dawnInfo.source}`}
             />
             <InfoRow
@@ -441,14 +442,14 @@ const styles: Record<string, React.CSSProperties> = {
   },
   title: {
     margin: 0,
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: "1.5rem",
     fontWeight: 700,
     color: "var(--text-primary)",
     letterSpacing: "-0.02em",
   },
   badge: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 13,
     fontWeight: 600,
     letterSpacing: "1px",
@@ -473,7 +474,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 16,
   },
   infoLabel: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 12,
     color: "var(--text-dim-40)",
     fontWeight: 500,
@@ -481,13 +482,13 @@ const styles: Record<string, React.CSSProperties> = {
     flexShrink: 0,
   },
   infoValue: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 14,
     fontWeight: 500,
     textAlign: "right" as const,
   },
   infoHint: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 10,
     color: "var(--text-dim-30)",
     fontStyle: "italic",
@@ -510,18 +511,18 @@ const styles: Record<string, React.CSSProperties> = {
     flexShrink: 0,
   },
   legendLabel: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 11,
     fontWeight: 500,
   },
   legendDuration: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 10,
-    color: "rgba(255,255,255,0.3)",
+    color: "var(--color-neutral)",
   },
   divider: {
     height: 1,
-    background: "rgba(255,255,255,0.06)",
+    background: "var(--color-rule-2)",
     margin: "4px 0",
   },
 };

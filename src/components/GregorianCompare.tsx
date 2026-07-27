@@ -6,6 +6,7 @@
  */
 
 import type { Reading } from "../engine/types";
+import "./CycleViews.css";
 import {
   META_SEASON_LABELS,
   META_SEASON_EMOJIS,
@@ -69,11 +70,11 @@ export default function GregorianCompare({
   const moonColor = LUNAR_SEGMENT_COLORS[moonClock.segment];
   const earthMonthColor =
     earthMonth.segment === "grow-in" || earthMonth.segment === "pause-1"
-      ? "#34d399"
-      : "#22d3ee";
+      ? "var(--color-growth)"
+      : "var(--color-day-light)";
 
   return (
-    <div style={styles.container}>
+    <div className="comparison-grid" style={styles.container}>
       {/* ── Gregorian side ── */}
       <div style={styles.side}>
         <div style={styles.sideHeader}>
@@ -96,7 +97,7 @@ export default function GregorianCompare({
       </div>
 
       {/* ── Divider ── */}
-      <div style={styles.divider}>
+      <div className="comparison-divider" style={styles.divider}>
         <div style={styles.dividerLine} />
         <span style={styles.dividerLabel}>⟷</span>
         <div style={styles.dividerLine} />
@@ -179,7 +180,7 @@ export default function GregorianCompare({
                   ? "🌕 Full Moon"
                   : "🌑 New Moon"
               }
-              valueColor="#f5dfa6"
+              valueColor="var(--color-solar-soft)"
             />
           )}
         </div>
@@ -251,7 +252,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexShrink: 0,
   },
   sideTitle: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 13,
     fontWeight: 600,
     letterSpacing: "0.5px",
@@ -264,7 +265,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 8,
   },
   groupLabel: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 10,
     fontWeight: 600,
     letterSpacing: "1px",
@@ -281,7 +282,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 12,
   },
   rowLabel: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 11,
     color: "var(--text-dim-40)",
     fontWeight: 500,
@@ -296,7 +297,7 @@ const styles: Record<string, React.CSSProperties> = {
     minWidth: 0,
   },
   rowValue: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 13,
     fontWeight: 500,
     fontVariantNumeric: "tabular-nums",
@@ -304,7 +305,7 @@ const styles: Record<string, React.CSSProperties> = {
     wordBreak: "break-word" as const,
   },
   rowHint: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 10,
     color: "var(--text-dim-30)",
     fontWeight: 400,

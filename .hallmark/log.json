@@ -1,0 +1,13 @@
+[
+  {
+    "date": "2026-07-27",
+    "scope": "app",
+    "macrostructure": "Map / Diagram",
+    "theme": "custom",
+    "theme_axes": "dark+light / high-contrast-serif / cool-violet",
+    "enrichment": "static CSS star field and nebulae",
+    "nav": "N5",
+    "footer": "Ft2",
+    "brief": "Human Cycles celestial instrument redesign"
+  }
+]

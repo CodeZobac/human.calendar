@@ -132,7 +132,7 @@ export default function CycleWheel({
             dominantBaseline="central"
             fill={isActive ? "#fff" : "var(--text-dim-35)"}
             fontSize={isActive ? 13 : 11}
-            fontFamily="'Outfit', sans-serif"
+            fontFamily="var(--font-display)"
             fontWeight={isActive ? 600 : 400}
             style={{ transition: "all 0.4s ease", pointerEvents: "none" }}
           >
@@ -148,7 +148,7 @@ export default function CycleWheel({
           dominantBaseline="central"
           fill={accentColor}
           fontSize={28}
-          fontFamily="'Outfit', sans-serif"
+          fontFamily="var(--font-display)"
           fontWeight={700}
           style={{ filter: `drop-shadow(0 0 8px ${glowColor})` }}
         >
@@ -161,7 +161,7 @@ export default function CycleWheel({
           dominantBaseline="central"
           fill="var(--text-dim-35)"
           fontSize={9}
-          fontFamily="'Inter', sans-serif"
+          fontFamily="var(--font-body)"
           fontWeight={500}
           letterSpacing="1.5"
         >
@@ -195,14 +195,14 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 2,
   },
   label: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 13,
     fontWeight: 600,
     letterSpacing: "0.5px",
     textTransform: "uppercase" as const,
   },
   sublabel: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 12,
     color: "var(--text-dim-45)",
     fontWeight: 400,

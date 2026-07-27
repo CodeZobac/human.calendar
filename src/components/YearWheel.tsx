@@ -12,6 +12,7 @@
  */
 
 import type { SolarYearReading } from "../engine/types";
+import "./CycleViews.css";
 import {
   META_SEASON_COLORS,
   META_SEASON_LABELS,
@@ -88,7 +89,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
   const py = CY + MID_R * Math.sin(progressRad);
 
   return (
-    <div style={styles.container}>
+    <div className="cycle-instrument" style={styles.container}>
       <div style={styles.header}>
         <h2 style={styles.title}>Year Wheel</h2>
         <span style={{ ...styles.badge, color: activeColor }}>
@@ -145,7 +146,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
                 strokeWidth={isActive ? 1.5 : 0.5}
                 opacity={isActive ? 1 : 0.55}
                 filter={isActive ? "url(#yw-glow)" : undefined}
-                style={{ transition: "all 0.6s ease" }}
+                style={{ transition: "opacity var(--dur-long) var(--ease-out)" }}
               />
             );
           })}
@@ -171,11 +172,11 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
                 y={ly}
                 textAnchor="middle"
                 dominantBaseline="central"
-                fill={isActive ? "#fff" : color + "aa"}
+                fill={isActive ? "var(--color-ink)" : color}
                 fontSize={isActive ? 14 : 11}
-                fontFamily="'Outfit', sans-serif"
+                fontFamily="var(--font-display)"
                 fontWeight={isActive ? 700 : 400}
-                style={{ transition: "all 0.4s ease" }}
+                style={{ transition: "opacity var(--dur-long) var(--ease-out)" }}
               >
                 {m}
               </text>
@@ -196,7 +197,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
                   y1={ly1}
                   x2={lx2}
                   y2={ly2}
-                  stroke="rgba(212,168,83,0.6)"
+                  stroke="var(--color-threshold)"
                   strokeWidth={2}
                 />
               </g>
@@ -211,7 +212,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             dominantBaseline="central"
             fill="var(--text-dim-30)"
             fontSize={7}
-            fontFamily="'Inter', sans-serif"
+            fontFamily="var(--font-body)"
           >
             ↑ Breath-in
           </text>
@@ -222,7 +223,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             dominantBaseline="central"
             fill="var(--text-dim-30)"
             fontSize={7}
-            fontFamily="'Inter', sans-serif"
+            fontFamily="var(--font-body)"
           >
             ↓ Breath-out
           </text>
@@ -234,14 +235,14 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             r={10}
             fill={activeColor + "44"}
             filter="url(#yw-glow)"
-            style={{ transition: "all 0.8s cubic-bezier(0.16,1,0.3,1)" }}
+            style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
           <circle
             cx={px}
             cy={py}
             r={5}
             fill={activeColor}
-            style={{ transition: "all 0.8s cubic-bezier(0.16,1,0.3,1)" }}
+            style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
           <circle cx={px} cy={py} r={2} fill="white" />
 
@@ -253,7 +254,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             dominantBaseline="central"
             fill={activeColor}
             fontSize={24}
-            fontFamily="'Outfit', sans-serif"
+            fontFamily="var(--font-display)"
             fontWeight={700}
             style={{ filter: `drop-shadow(0 0 10px ${activeColor}99)` }}
           >
@@ -266,7 +267,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             dominantBaseline="central"
             fill="var(--text-dim-35)"
             fontSize={8}
-            fontFamily="'Inter', sans-serif"
+            fontFamily="var(--font-body)"
             letterSpacing="1.5"
           >
             OF 9
@@ -278,7 +279,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             dominantBaseline="central"
             fill={activeColor}
             fontSize={10}
-            fontFamily="'Outfit', sans-serif"
+            fontFamily="var(--font-display)"
             fontWeight={500}
           >
             {META_SEASON_LABELS[metaSeason].toUpperCase()}
@@ -375,14 +376,14 @@ const styles: Record<string, React.CSSProperties> = {
   },
   title: {
     margin: 0,
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: "1.5rem",
     fontWeight: 700,
     color: "var(--text-primary)",
     letterSpacing: "-0.02em",
   },
   badge: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 13,
     fontWeight: 600,
     letterSpacing: "0.5px",
@@ -405,7 +406,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 16,
   },
   infoLabel: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 12,
     color: "var(--text-dim-40)",
     fontWeight: 500,
@@ -413,7 +414,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexShrink: 0,
   },
   infoValue: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 14,
     fontWeight: 500,
     textAlign: "right" as const,
@@ -435,7 +436,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexShrink: 0,
   },
   legendLabel: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 12,
     fontWeight: 400,
   },

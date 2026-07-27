@@ -12,6 +12,7 @@
  */
 
 import type { MoonClockReading } from "../engine/types";
+import "./CycleViews.css";
 import { formatMoonClock, lunarIllumination } from "../engine/viewModel";
 import {
   SYNODIC_MONTH_DAYS,
@@ -34,10 +35,10 @@ const TRACK_W = OUTER_R - INNER_R;
 
 // ── Colors ────────────────────────────────────────────────────────────────
 // Absolute colors so both light and dark modes have strong contrast in SVG.
-const WAXING_COLOR = "#8ba4c7"; // lunar-400 equivalent
-const WANING_COLOR = "#4a6d9c"; // lunar-500 equivalent
-const WAXING_BRIGHT = "#c9d6e8";
-const TRACK_BG = "rgba(100,130,180,0.12)";
+const WAXING_COLOR = "var(--color-lunar)";
+const WANING_COLOR = "var(--color-lunar-deep)";
+const WAXING_BRIGHT = "var(--color-lunar)";
+const TRACK_BG = "var(--color-rule-2)";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function degToRad(deg: number): number {
@@ -106,11 +107,11 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
   const phaseTicks = Array.from({ length: 9 }, (_, i) => i); // 0–8
 
   return (
-    <div style={styles.container}>
+    <div className="cycle-instrument" style={styles.container}>
       <div style={styles.header}>
         <h2 style={styles.title}>Moon Clock</h2>
         {peakLabel ? (
-          <span style={{ ...styles.badge, color: "#f5dfa6" }}>{peakLabel}</span>
+          <span style={{ ...styles.badge, color: "var(--color-solar-soft)" }}>{peakLabel}</span>
         ) : (
           <span
             style={{
@@ -165,8 +166,8 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             </linearGradient>
             {/* Centre disc gradient */}
             <radialGradient id="centre-grad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgba(139,164,199,0.18)" />
-              <stop offset="100%" stopColor="rgba(74,109,156,0.04)" />
+              <stop offset="0%" stopColor="color-mix(in oklch, var(--color-lunar) 18%, transparent)" />
+              <stop offset="100%" stopColor="color-mix(in oklch, var(--color-lunar-deep) 4%, transparent)" />
             </radialGradient>
           </defs>
 
@@ -195,23 +196,23 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
           {/* ── Breath-in arc (0° → 180°, right half) waxing ── */}
           <path
             d={arcPath(0, 180, OUTER_R, INNER_R, 1.5)}
-            fill={isBreathIn ? "url(#waxing-grad)" : "rgba(139,164,199,0.06)"}
+            fill={isBreathIn ? "url(#waxing-grad)" : "color-mix(in oklch, var(--color-lunar) 6%, transparent)"}
             stroke={WAXING_BRIGHT}
             strokeWidth={isBreathIn ? 2 : 0.8}
             strokeOpacity={isBreathIn ? 0.9 : 0.3}
             filter={isBreathIn ? "url(#moon-glow)" : undefined}
-            style={{ transition: "all 0.8s ease" }}
+            style={{ transition: "opacity var(--dur-long) var(--ease-out)" }}
           />
 
           {/* ── Breath-out arc (180° → 360°, left half) waning ── */}
           <path
             d={arcPath(180, 360, OUTER_R, INNER_R, 1.5)}
-            fill={!isBreathIn ? "url(#waning-grad)" : "rgba(74,109,156,0.06)"}
+            fill={!isBreathIn ? "url(#waning-grad)" : "color-mix(in oklch, var(--color-lunar-deep) 6%, transparent)"}
             stroke={WANING_COLOR}
             strokeWidth={!isBreathIn ? 2 : 0.8}
             strokeOpacity={!isBreathIn ? 0.9 : 0.3}
             filter={!isBreathIn ? "url(#moon-glow)" : undefined}
-            style={{ transition: "all 0.8s ease" }}
+            style={{ transition: "opacity var(--dur-long) var(--ease-out)" }}
           />
 
           {/* ── 9 phase tick marks (every 40°) ── */}
@@ -234,7 +235,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
                   y1={t1y}
                   x2={t2x}
                   y2={t2y}
-                  stroke={isMain ? WAXING_COLOR : "rgba(139,164,199,0.4)"}
+                  stroke={isMain ? WAXING_COLOR : "color-mix(in oklch, var(--color-lunar) 40%, transparent)"}
                   strokeWidth={isMain ? 1.5 : 1}
                 />
                 {isMain && (
@@ -246,7 +247,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
                     fill={WAXING_COLOR}
                     fillOpacity={0.75}
                     fontSize={9}
-                    fontFamily="'Outfit', sans-serif"
+                    fontFamily="var(--font-display)"
                     fontWeight={600}
                   >
                     {phase}
@@ -263,14 +264,14 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             r={phasePeak === "full-moon" ? 9 : 6}
             fill={
               phasePeak === "full-moon"
-                ? "rgba(255,255,255,0.95)"
-                : "rgba(200,215,235,0.45)"
+                ? "var(--color-ink)"
+                : "color-mix(in oklch, var(--color-lunar) 45%, transparent)"
             }
             stroke={WAXING_BRIGHT}
             strokeWidth={phasePeak === "full-moon" ? 2 : 1}
             strokeOpacity={0.7}
             filter={phasePeak === "full-moon" ? "url(#moon-glow)" : undefined}
-            style={{ transition: "all 0.5s ease" }}
+            style={{ transition: "opacity var(--dur-short) var(--ease-out)" }}
           />
 
           {/* ── New Moon marker at 0° (top) ── */}
@@ -280,14 +281,14 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             r={phasePeak === "new-moon" ? 9 : 6}
             fill={
               phasePeak === "new-moon"
-                ? "rgba(74,109,156,0.9)"
-                : "rgba(74,109,156,0.35)"
+                ? "var(--color-lunar-deep)"
+                : "color-mix(in oklch, var(--color-lunar-deep) 35%, transparent)"
             }
             stroke={WANING_COLOR}
             strokeWidth={phasePeak === "new-moon" ? 2 : 1}
             strokeOpacity={0.6}
             filter={phasePeak === "new-moon" ? "url(#moon-glow)" : undefined}
-            style={{ transition: "all 0.5s ease" }}
+            style={{ transition: "opacity var(--dur-short) var(--ease-out)" }}
           />
 
           {/* ── Vertical divider (12 o'clock ↔ 6 o'clock) ── */}
@@ -296,7 +297,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             y1={CY - OUTER_R - 2}
             x2={CX}
             y2={CY + OUTER_R + 2}
-            stroke="rgba(139,164,199,0.25)"
+            stroke="color-mix(in oklch, var(--color-lunar) 25%, transparent)"
             strokeWidth={1}
             strokeDasharray="3 5"
           />
@@ -310,7 +311,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             fill={WAXING_BRIGHT}
             fillOpacity={isBreathIn ? 0.75 : 0.3}
             fontSize={8}
-            fontFamily="'Inter', sans-serif"
+            fontFamily="var(--font-body)"
             fontWeight={500}
             letterSpacing="0.5"
           >
@@ -324,7 +325,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             fill={WANING_COLOR}
             fillOpacity={!isBreathIn ? 0.9 : 0.35}
             fontSize={8}
-            fontFamily="'Inter', sans-serif"
+            fontFamily="var(--font-body)"
             fontWeight={500}
             letterSpacing="0.5"
           >
@@ -339,7 +340,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             r={16}
             fill={activeColor}
             fillOpacity={0.18}
-            style={{ transition: "all 1s cubic-bezier(0.16,1,0.3,1)" }}
+            style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
           {/* Mid ring */}
           <circle
@@ -349,17 +350,17 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             fill={activeColor}
             fillOpacity={0.35}
             filter="url(#dot-glow)"
-            style={{ transition: "all 1s cubic-bezier(0.16,1,0.3,1)" }}
+            style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
           {/* Core dot */}
           <circle
             cx={px}
             cy={py}
             r={5.5}
-            fill={isBreathIn ? WAXING_BRIGHT : "#7ba8d4"}
+            fill={isBreathIn ? WAXING_BRIGHT : "var(--color-lunar-deep)"}
             stroke="white"
             strokeWidth={1.5}
-            style={{ transition: "all 1s cubic-bezier(0.16,1,0.3,1)" }}
+            style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
 
           {/* ── Centre disc ── */}
@@ -369,7 +370,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             cy={CY}
             r={INNER_R - 5}
             fill="none"
-            stroke="rgba(74,109,156,0.3)"
+            stroke="color-mix(in oklch, var(--color-lunar-deep) 30%, transparent)"
             strokeWidth={2}
           />
           {/* Disc background */}
@@ -378,7 +379,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             cy={CY}
             r={INNER_R - 7}
             fill="var(--bg-primary)"
-            stroke="rgba(139,164,199,0.2)"
+            stroke="color-mix(in oklch, var(--color-lunar) 20%, transparent)"
             strokeWidth={1}
           />
           {/* Illumination fill */}
@@ -386,8 +387,8 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             cx={CX}
             cy={CY}
             r={INNER_R - 14}
-            fill={`rgba(174,199,228,${illum * 0.55})`}
-            style={{ transition: "all 1.2s ease" }}
+            fill={`color-mix(in oklch, var(--color-lunar) ${illum * 55}%, transparent)`}
+            style={{ transition: "opacity var(--dur-long) var(--ease-out)" }}
           />
           {/* Gradient overlay */}
           <circle cx={CX} cy={CY} r={INNER_R - 14} fill="url(#centre-grad)" />
@@ -401,10 +402,10 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             dominantBaseline="central"
             fill="var(--text-primary)"
             fontSize={28}
-            fontFamily="'Outfit', sans-serif"
+            fontFamily="var(--font-display)"
             fontWeight={700}
             style={{
-              filter: `drop-shadow(0 0 10px ${isBreathIn ? "rgba(200,215,235,0.5)" : "rgba(74,109,156,0.6)"})`,
+              filter: `drop-shadow(0 0 10px ${isBreathIn ? "var(--color-lunar)" : "var(--color-lunar-deep)"})`,
             }}
           >
             {lunarPhase.toFixed(1)}
@@ -418,7 +419,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             fill={isBreathIn ? WAXING_COLOR : WANING_COLOR}
             fillOpacity={0.85}
             fontSize={8}
-            fontFamily="'Inter', sans-serif"
+            fontFamily="var(--font-body)"
             fontWeight={700}
             letterSpacing="1.5"
           >
@@ -433,7 +434,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
             fill={isBreathIn ? WAXING_BRIGHT : WANING_COLOR}
             fillOpacity={0.9}
             fontSize={11}
-            fontFamily="'Outfit', sans-serif"
+            fontFamily="var(--font-display)"
             fontWeight={600}
           >
             {Math.round(illum * 100)}% LIT
@@ -459,7 +460,7 @@ export default function MoonWheel({ moonClock }: MoonWheelProps) {
           <InfoRow
             label="Peak"
             value={phasePeak === "full-moon" ? "🌕 Full Moon" : "🌑 New Moon"}
-            valueColor="#f5dfa6"
+            valueColor="var(--color-solar-soft)"
           />
         )}
         <InfoRow
@@ -557,14 +558,14 @@ const styles: Record<string, React.CSSProperties> = {
   },
   title: {
     margin: 0,
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: "1.5rem",
     fontWeight: 700,
     color: "var(--text-primary)",
     letterSpacing: "-0.02em",
   },
   badge: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 13,
     fontWeight: 600,
     letterSpacing: "0.5px",
@@ -587,7 +588,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 16,
   },
   infoLabel: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 12,
     color: "var(--text-dim-40)",
     fontWeight: 500,
@@ -595,7 +596,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexShrink: 0,
   },
   infoValue: {
-    fontFamily: "'Outfit', sans-serif",
+    fontFamily: "var(--font-display)",
     fontSize: 14,
     fontWeight: 500,
     textAlign: "right" as const,
@@ -615,10 +616,10 @@ const styles: Record<string, React.CSSProperties> = {
     height: 9,
     borderRadius: "50%",
     flexShrink: 0,
-    transition: "all 0.4s ease",
+    transition: "opacity var(--dur-short) var(--ease-out)",
   },
   legendLabel: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 12,
     fontWeight: 400,
     transition: "color 0.4s ease",

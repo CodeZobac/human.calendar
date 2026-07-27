@@ -1,16 +1,4 @@
-/**
- * App — Root component with 6-tab navigation for the nonary calendar.
- *
- * Tabs: Today · Day · Year · Month · Moon · Compare
- *
- * State:
- *   - activeTab    : which screen is visible
- *   - selectedDate : controlled by the date picker (Today uses live time)
- *   - liveNow      : updated every 30 s when "today" is selected
- *   - isDark       : theme toggle (persisted in localStorage)
- */
-
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./index.css";
 import { getReading } from "./engine/reading";
 import { getDawnInfo, type DawnInfo } from "./services/geo";
@@ -20,86 +8,89 @@ import YearWheel from "./components/YearWheel";
 import MonthTimeline from "./components/MonthTimeline";
 import MoonWheel from "./components/MoonWheel";
 import GregorianCompare from "./components/GregorianCompare";
+import TzolkinView, { type TzolkinMotion } from "./components/TzolkinView";
 import Dock from "./components/Dock";
-import { 
-  Target, 
-  Sun, 
-  RotateCw, 
-  Calendar, 
-  Moon, 
-  ArrowLeftRight 
+import { getTzolkinReading } from "./engine/tzolkin";
+import {
+  ArrowLeftRight,
+  Moon,
+  Orbit,
+  RotateCw,
+  Sun,
+  Target,
 } from "lucide-react";
 
-type Tab = "today" | "day" | "year" | "month" | "moon" | "compare";
+type Tab = "today" | "nonary" | "moon" | "compare" | "tzolkin";
 
 function toInputDate(d: Date): string {
-  return d.toISOString().split("T")[0];
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
+
 function fromInputDate(s: string): Date {
-  return new Date(s + "T12:00:00Z");
+  return new Date(`${s}T12:00:00Z`);
 }
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>("today");
-
-  const dockItems = useMemo(() => [
-    { key: "today", label: "Today", icon: <Target /> },
-    { key: "day", label: "Day", icon: <Sun /> },
-    { key: "year", label: "Year", icon: <RotateCw /> },
-    { key: "month", label: "Month", icon: <Calendar /> },
-    { key: "moon", label: "Moon", icon: <Moon /> },
-    { key: "compare", label: "Compare", icon: <ArrowLeftRight /> },
-  ].map(item => ({
-    ...item,
-    onClick: () => setActiveTab(item.key as Tab),
-    isActive: activeTab === item.key,
-  })), [activeTab]);
-
-  // ── Theme ──────────────────────────────────────────────────────────────────
-  const [isDark, setIsDark] = useState<boolean>(() => {
+  const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem("theme");
-    if (saved) return saved === "dark";
-    return !window.matchMedia("(prefers-color-scheme: light)").matches;
+    return saved
+      ? saved === "dark"
+      : !window.matchMedia("(prefers-color-scheme: light)").matches;
   });
+  const [pickedDate, setPickedDate] = useState(() => {
+    const now = new Date();
+    return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 12));
+  });
+  const [tzolkinDate, setTzolkinDate] = useState(() => {
+    const now = new Date();
+    return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 12));
+  });
+  const [tzolkinMotion, setTzolkinMotion] = useState<TzolkinMotion>("jump");
+  const [liveNow, setLiveNow] = useState(() => new Date());
+  const [dawnInfo, setDawnInfo] = useState<DawnInfo | null>(null);
+
+  const navItems = useMemo(
+    () => [
+      { key: "today", label: "Today", icon: <Target /> },
+      { key: "nonary", label: "Nonary", icon: <RotateCw /> },
+      { key: "moon", label: "Moon", icon: <Moon /> },
+      { key: "compare", label: "Compare", icon: <ArrowLeftRight /> },
+      { key: "tzolkin", label: "Tzolk’in", icon: <Orbit /> },
+    ].map((item) => ({
+      ...item,
+      onClick: () => setActiveTab(item.key as Tab),
+      isActive: activeTab === item.key,
+    })),
+    [activeTab],
+  );
 
   useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      isDark ? "dark" : "light",
-    );
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+    const theme = isDark ? "dark" : "light";
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", isDark ? "#0b0d1b" : "#edf4ff");
   }, [isDark]);
 
-  function toggleTheme() {
-    setIsDark((prev) => !prev);
-  }
-
-  // ── Date state ─────────────────────────────────────────────────────────────
-  const [pickedDate, setPickedDate] = useState<Date>(() => {
-    const now = new Date();
-    return new Date(
-      Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0),
-    );
-  });
-
-  const [liveNow, setLiveNow] = useState(() => new Date());
-
   useEffect(() => {
-    const interval = setInterval(() => setLiveNow(new Date()), 30_000);
-    return () => clearInterval(interval);
+    const interval = window.setInterval(() => setLiveNow(new Date()), 30_000);
+    return () => window.clearInterval(interval);
   }, []);
 
   const todayStr = toInputDate(new Date());
   const isToday = toInputDate(pickedDate) === todayStr;
   const effectiveDate = isToday ? liveNow : pickedDate;
   const dateStr = toInputDate(effectiveDate);
-
-  // ── Dawn info: IP → location → real sunrise ────────────────────────────────
-  const [dawnInfo, setDawnInfo] = useState<DawnInfo | null>(null);
+  const dawnDate = useMemo(() => fromInputDate(dateStr), [dateStr]);
 
   useEffect(() => {
     let cancelled = false;
-    getDawnInfo(effectiveDate)
+    getDawnInfo(dawnDate)
       .then((info) => {
         if (!cancelled) setDawnInfo(info);
       })
@@ -109,184 +100,174 @@ export default function App() {
     return () => {
       cancelled = true;
     };
-  }, [dateStr]); // re-fetch only when the calendar date changes
+  }, [dawnDate]);
 
   const reading = useMemo(
     () => getReading(effectiveDate, { dawnDate: dawnInfo?.sunrise }),
     [effectiveDate, dawnInfo],
   );
+  const tzolkinReading = useMemo(() => getTzolkinReading(tzolkinDate), [tzolkinDate]);
+  const isTzolkinToday = toInputDate(tzolkinDate) === todayStr;
 
-  function handleDateChange(d: Date) {
-    setPickedDate(d);
+  function moveTzolkin(days: number) {
+    setTzolkinMotion(days < 0 ? "previous" : "next");
+    setTzolkinDate((date) => new Date(date.getTime() + days * 86_400_000));
   }
 
-  function handleResetToday() {
+  function setTzolkinInput(value: string) {
+    if (!value) return;
+    setTzolkinMotion("jump");
+    setTzolkinDate(fromInputDate(value));
+  }
+
+  function resetTzolkinToday() {
     const now = new Date();
-    setPickedDate(
-      new Date(
-        Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0),
-      ),
-    );
+    setTzolkinMotion("jump");
+    setTzolkinDate(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 12)));
+  }
+
+  function resetToday() {
+    const now = new Date();
+    setPickedDate(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 12)));
   }
 
   return (
-    <>
-      {/* Theme toggle button */}
-      <button
-        onClick={toggleTheme}
-        title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-        style={styles.themeToggle}
-      >
-        {isDark ? "☀" : "☽"}
-      </button>
+    <div className="app-shell">
+      <header className="site-header">
+        <button
+          type="button"
+          className="brand-mark"
+          onClick={() => setActiveTab("today")}
+          aria-label="Human Cycles home"
+        >
+          <span className="brand-mark__orbit" aria-hidden="true"><span /></span>
+          <span className="brand-mark__copy">
+            <strong>Human Cycles</strong>
+            <small>Nature, measured in nines</small>
+          </span>
+        </button>
 
-      {/* Main content */}
-      <main style={styles.main}>
+        <Dock items={navItems} />
+
+        <button
+          type="button"
+          className="icon-button theme-toggle"
+          onClick={() => setIsDark((value) => !value)}
+          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          {isDark ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+        </button>
+      </header>
+
+      <main className="app-main" id="main-content">
         {activeTab === "today" && (
           <TodayDashboard
             reading={reading}
             selectedDate={pickedDate}
-            onDateChange={handleDateChange}
+            onDateChange={setPickedDate}
             isToday={isToday}
-            onResetToday={handleResetToday}
+            onResetToday={resetToday}
             dawnInfo={dawnInfo}
           />
         )}
 
-        {activeTab === "day" && (
-          <div style={styles.screenPad}>
-            <DayClockView dayClock={reading.dayClock} dawnInfo={dawnInfo} />
-          </div>
-        )}
-
-        {activeTab === "year" && (
-          <div style={styles.screenPad}>
-            <YearWheel solarYear={reading.solarYear} />
-          </div>
-        )}
-
-        {activeTab === "month" && (
-          <div style={styles.screenPad}>
-            <h2 style={styles.screenTitle}>Earth Month Timeline</h2>
-            <div className="glass-panel" style={styles.monthCard}>
-              <MonthTimeline earthMonth={reading.earthMonth} />
+        {activeTab === "nonary" && (
+          <section className="view-page nonary-page animate-in" aria-labelledby="nonary-title">
+            <div className="page-heading">
+              <span className="eyebrow">Earth rhythm</span>
+              <h1 id="nonary-title">The Nonary System</h1>
+              <p>Day, solar year, and Earth month read as one nested cycle.</p>
             </div>
-          </div>
+
+            <div className="nonary-instruments">
+              <section className="nonary-instrument" aria-label="Day Clock">
+                <DayClockView dayClock={reading.dayClock} dawnInfo={dawnInfo} />
+              </section>
+
+              <section className="nonary-instrument" aria-label="Year Wheel">
+                <YearWheel solarYear={reading.solarYear} />
+              </section>
+
+              <section className="nonary-instrument nonary-instrument--month" aria-labelledby="month-timeline-title">
+                <div className="page-heading page-heading--instrument">
+                  <span className="eyebrow">Forty-point-five-eight days</span>
+                  <h2 id="month-timeline-title">Earth Month Timeline</h2>
+                  <p>A passage through expansion, pause, and contraction.</p>
+                </div>
+                <div className="editorial-panel timeline-panel">
+                  <MonthTimeline earthMonth={reading.earthMonth} />
+                </div>
+              </section>
+            </div>
+          </section>
         )}
 
         {activeTab === "moon" && (
-          <div style={styles.screenPad}>
+          <section className="view-page animate-in" aria-label="Moon Clock">
             <MoonWheel moonClock={reading.moonClock} />
-          </div>
+          </section>
         )}
 
         {activeTab === "compare" && (
-          <div style={styles.screenPad}>
-            <h2 style={styles.screenTitle}>Gregorian / Nonary Comparison</h2>
-            <div style={styles.compareWrap}>
-              <div style={styles.compareDateRow}>
-                <input
-                  type="date"
-                  value={toInputDate(pickedDate)}
-                  onChange={(e) =>
-                    handleDateChange(fromInputDate(e.target.value))
-                  }
-                  style={styles.dateInput}
-                />
-                {!isToday && (
-                  <button onClick={handleResetToday} style={styles.todayBtn}>
-                    Today
-                  </button>
-                )}
+          <section className="view-page animate-in">
+            <div className="page-heading page-heading--with-action">
+              <div>
+                <span className="eyebrow">Two ways of seeing</span>
+                <h1>Gregorian / Nonary</h1>
+                <p>The familiar calendar beside nature's repeating cycles.</p>
               </div>
-              <div className="glass-panel">
-                <GregorianCompare reading={reading} selectedDate={pickedDate} />
-              </div>
+              <DateControl
+                date={pickedDate}
+                isToday={isToday}
+                onChange={setPickedDate}
+                onReset={resetToday}
+              />
             </div>
-          </div>
+            <div className="editorial-panel compare-panel">
+              <GregorianCompare reading={reading} selectedDate={pickedDate} />
+            </div>
+          </section>
+        )}
+
+        {activeTab === "tzolkin" && (
+          <TzolkinView
+            reading={tzolkinReading}
+            date={tzolkinDate}
+            isToday={isTzolkinToday}
+            motion={tzolkinMotion}
+            onPrevious={() => moveTzolkin(-1)}
+            onNext={() => moveTzolkin(1)}
+            onDateChange={setTzolkinInput}
+            onToday={resetTzolkinToday}
+          />
         )}
       </main>
-
-      {/* Tab bar */}
-      <Dock items={dockItems} />
-    </>
+    </div>
   );
 }
 
-const styles: Record<string, React.CSSProperties> = {
-  themeToggle: {
-    position: "fixed",
-    top: 12,
-    right: 12,
-    zIndex: 200,
-    width: 38,
-    height: 38,
-    borderRadius: "50%",
-    border: "1px solid var(--border-medium)",
-    background: "var(--bg-elevated)",
-    color: "var(--text-primary)",
-    fontSize: 16,
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    boxShadow: "var(--shadow-sm)",
-    transition: "background 0.2s ease, border-color 0.2s ease",
-  },
-  main: {
-    paddingBottom: 100,
-    minHeight: "100dvh",
-  },
-  screenPad: {
-    padding: "0 20px",
-    maxWidth: 1200,
-    margin: "0 auto",
-    paddingBottom: 60,
-  },
-  screenTitle: {
-    fontFamily: "'Outfit', sans-serif",
-    fontSize: "1.5rem",
-    fontWeight: 700,
-    color: "var(--text-primary)",
-    letterSpacing: "-0.02em",
-    paddingTop: 32,
-    marginBottom: 24,
-  },
-  monthCard: {
-    padding: 24,
-  },
-  compareWrap: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 16,
-  },
-  compareDateRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    paddingTop: 32,
-  },
-  dateInput: {
-    fontFamily: "'Inter', sans-serif",
-    fontSize: 14,
-    padding: "6px 12px",
-    borderRadius: 8,
-    border: "1px solid var(--input-border)",
-    background: "var(--input-bg)",
-    color: "var(--input-text)",
-    outline: "none",
-    cursor: "pointer",
-    colorScheme: "var(--color-scheme)" as React.CSSProperties["colorScheme"],
-  },
-  todayBtn: {
-    fontFamily: "'Inter', sans-serif",
-    fontSize: 12,
-    padding: "6px 14px",
-    borderRadius: 6,
-    border: "1px solid var(--border-accent)",
-    background: "var(--solar-glow)",
-    color: "var(--solar-400)",
-    cursor: "pointer",
-    fontWeight: 500,
-  },
-};
+function DateControl({
+  date,
+  isToday,
+  onChange,
+  onReset,
+}: {
+  date: Date;
+  isToday: boolean;
+  onChange: (date: Date) => void;
+  onReset: () => void;
+}) {
+  return (
+    <div className="date-control">
+      <label className="sr-only" htmlFor="comparison-date">Selected date</label>
+      <input
+        id="comparison-date"
+        type="date"
+        value={toInputDate(date)}
+        onChange={(event) => onChange(fromInputDate(event.target.value))}
+      />
+      {!isToday && <button type="button" onClick={onReset}>Today</button>}
+    </div>
+  );
+}

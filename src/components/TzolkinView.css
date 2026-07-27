@@ -1,0 +1,89 @@
+.tzolkin-page { width: min(100%, 1120px); }
+.tzolkin-heading { max-width: 48rem; margin-bottom: 2rem; }
+.tzolkin-instrument {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(15rem, .7fr);
+  grid-template-areas: "stage reading" "stage controls";
+  gap: 1rem 2rem;
+  padding: clamp(1rem, 3vw, 2.25rem);
+  border: 1px solid var(--tzolkin-rule);
+  border-radius: var(--radius-lg);
+  background: var(--tzolkin-surface);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.tzolkin-stage { grid-area: stage; display: grid; place-items: center; min-width: 0; }
+.tzolkin-stage svg { display: block; width: 100%; height: auto; overflow: visible; }
+.tz-orbit-rule { stroke: var(--tzolkin-rule); stroke-width: 1; stroke-dasharray: 3 8; }
+.tz-wheel { transform-box: view-box; transform-origin: center; }
+.tz-number-wheel { transform-origin: 174px 195px; transform: rotate(var(--wheel-angle)); }
+.tz-sign-wheel { transform-origin: 444px 195px; transform: rotate(var(--wheel-angle)); }
+.tz-wheel__body { fill: var(--tzolkin-number-fill); stroke: var(--tzolkin-number); stroke-width: 1.5; }
+.tz-wheel__body--sign { fill: var(--tzolkin-sign-fill); stroke: var(--tzolkin-sign); }
+.tz-tooth { fill: var(--tzolkin-surface); stroke: var(--tzolkin-number); stroke-width: 1.5; }
+.tz-tooth--sign { stroke: var(--tzolkin-sign); }
+.tz-number { fill: var(--text-primary); font: 700 13px var(--font-body); font-variant-numeric: tabular-nums; }
+.tz-sign-dot { fill: var(--tzolkin-sign); }
+.tz-sign-names text { fill: var(--text-muted); font: 600 9px var(--font-body); }
+.tz-sign-names text.is-active { fill: var(--tzolkin-sign); font-size: 11px; }
+.tz-contact { fill: var(--tzolkin-contact); filter: drop-shadow(0 0 8px var(--tzolkin-contact)); }
+.tzolkin-reading { grid-area: reading; align-self: end; border-left: 1px solid var(--tzolkin-rule); padding-left: 1.5rem; }
+.tzolkin-reading__date { color: var(--text-muted); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; }
+.tzolkin-reading__primary { display: flex; align-items: baseline; gap: .7rem; margin: .55rem 0 .15rem; }
+.tzolkin-reading__primary strong { color: var(--tzolkin-number); font: 500 clamp(3rem, 7vw, 5.5rem)/.9 var(--font-display); font-variant-numeric: tabular-nums; }
+.tzolkin-reading__primary span { color: var(--tzolkin-sign); font: 500 clamp(2rem, 4vw, 3.3rem)/1 var(--font-display); }
+.tzolkin-reading p { color: var(--text-secondary); font-size: .82rem; }
+.tzolkin-reading b { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.tzolkin-controls { grid-area: controls; align-self: start; display: flex; flex-wrap: wrap; gap: .5rem; border-left: 1px solid var(--tzolkin-rule); padding: 1rem 0 0 1.5rem; }
+.tzolkin-controls button, .tzolkin-controls input {
+  min-height: 2.75rem; border: 1px solid var(--input-border); border-radius: var(--radius-sm);
+  background: var(--input-bg); color: var(--input-text);
+}
+.tzolkin-controls input { width: 9.2rem; padding: 0 .65rem; color-scheme: var(--color-scheme); }
+.tzolkin-controls button { cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; }
+.tzolkin-step { width: 2.75rem; }
+.tzolkin-today { padding: 0 .8rem; font-size: .76rem; font-weight: 700; }
+.tzolkin-controls svg { width: 1rem; }
+.tzolkin-controls button:disabled { opacity: .38; cursor: default; }
+.motion-next .tz-number-wheel { animation: tz-number-next 420ms var(--ease-out); }
+.motion-next .tz-sign-wheel { animation: tz-sign-next 420ms var(--ease-out); }
+.motion-previous .tz-number-wheel { animation: tz-number-previous 420ms var(--ease-out); }
+.motion-previous .tz-sign-wheel { animation: tz-sign-previous 420ms var(--ease-out); }
+.motion-jump { animation: tz-fade 220ms ease-out; }
+@keyframes tz-number-next { from { transform: rotate(calc(var(--wheel-angle) + 27.692deg)); } }
+@keyframes tz-sign-next { from { transform: rotate(calc(var(--wheel-angle) - 18deg)); } }
+@keyframes tz-number-previous { from { transform: rotate(calc(var(--wheel-angle) - 27.692deg)); } }
+@keyframes tz-sign-previous { from { transform: rotate(calc(var(--wheel-angle) + 18deg)); } }
+@keyframes tz-fade { from { opacity: .35; } }
+.tzolkin-legend { margin-top: 1.25rem; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--tzolkin-rule); border-radius: var(--radius-lg); background: var(--tzolkin-surface); }
+.tzolkin-legend h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); }
+.tzolkin-legend ol { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem .8rem; margin-top: 1.25rem; }
+.tzolkin-legend li { padding: .45rem .55rem; border-radius: .5rem; color: var(--text-secondary); font-size: .78rem; white-space: nowrap; }
+.tzolkin-legend li span { margin-right: .35rem; color: var(--text-muted); font-size: .62rem; font-variant-numeric: tabular-nums; }
+.tzolkin-legend li.is-active { color: var(--tzolkin-sign); background: var(--tzolkin-sign-fill); }
+.tzolkin-notes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 3rem; background: var(--tzolkin-rule); border: 1px solid var(--tzolkin-rule); }
+.tzolkin-notes article { padding: clamp(1.25rem, 3vw, 2rem); background: var(--bg-primary); }
+.tzolkin-notes h2 { font-size: 1.55rem; margin-bottom: .65rem; }
+.tzolkin-notes p, .tzolkin-correlation p { color: var(--text-secondary); font-size: .86rem; line-height: 1.75; }
+.tzolkin-notes a { color: var(--tzolkin-sign); text-underline-offset: .2em; white-space: nowrap; }
+.tzolkin-correlation { margin-top: 1rem; padding: 1rem 1.2rem; border-left: 2px solid var(--tzolkin-contact); background: var(--surface-3); }
+.tzolkin-correlation strong { display: block; margin-bottom: .25rem; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+@media (max-width: 47.99rem) {
+  .tzolkin-instrument { grid-template-columns: 1fr; grid-template-areas: "stage" "reading" "controls"; }
+  .tzolkin-reading, .tzolkin-controls { border-left: 0; padding-left: 0; text-align: center; }
+  .tzolkin-controls { justify-content: center; padding-top: .5rem; }
+  .tzolkin-legend ol { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 39.99rem) {
+  .tzolkin-page { padding-top: 2.5rem; }
+  .tzolkin-instrument { padding: .75rem; }
+  .tzolkin-stage svg { width: 108%; max-width: none; }
+  .tz-sign-names { display: none; }
+  .tzolkin-legend ol { grid-template-columns: repeat(2, 1fr); }
+  .tzolkin-notes { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-next .tz-number-wheel, .motion-next .tz-sign-wheel,
+  .motion-previous .tz-number-wheel, .motion-previous .tz-sign-wheel { animation: tz-fade 150ms linear; }
+  .motion-jump { animation-duration: 150ms; }
+}

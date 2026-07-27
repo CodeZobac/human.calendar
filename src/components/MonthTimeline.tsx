@@ -25,8 +25,8 @@ const SEGMENTS = [
     key: "grow-in" as const,
     start: 0,
     end: GROW_HALF,
-    color: "#34d399",
-    bg: "rgba(52,211,153,0.15)",
+    color: "var(--color-growth)",
+    bg: "color-mix(in oklch, var(--color-growth) 16%, var(--color-paper-2))",
     label: "Grow-in",
     description: "Expansion",
   },
@@ -34,8 +34,8 @@ const SEGMENTS = [
     key: "pause-1" as const,
     start: GROW_HALF,
     end: GROW_HALF + MONTH_PAUSE,
-    color: "#d4a853",
-    bg: "rgba(212,168,83,0.2)",
+    color: "var(--color-threshold)",
+    bg: "color-mix(in oklch, var(--color-threshold) 18%, var(--color-paper-2))",
     label: "Pause",
     description: "Top reversal",
   },
@@ -43,8 +43,8 @@ const SEGMENTS = [
     key: "grow-out" as const,
     start: GROW_HALF + MONTH_PAUSE,
     end: GROW_HALF + MONTH_PAUSE + GROW_HALF,
-    color: "#22d3ee",
-    bg: "rgba(34,211,238,0.15)",
+    color: "var(--color-day-light)",
+    bg: "color-mix(in oklch, var(--color-day-light) 16%, var(--color-paper-2))",
     label: "Grow-out",
     description: "Contraction",
   },
@@ -52,8 +52,8 @@ const SEGMENTS = [
     key: "pause-2" as const,
     start: GROW_HALF + MONTH_PAUSE + GROW_HALF,
     end: TOTAL_MONTH,
-    color: "#d4a853",
-    bg: "rgba(212,168,83,0.2)",
+    color: "var(--color-threshold)",
+    bg: "color-mix(in oklch, var(--color-threshold) 18%, var(--color-paper-2))",
     label: "Pause",
     description: "Bottom reversal",
   },
@@ -104,12 +104,12 @@ export default function MonthTimeline({ earthMonth }: MonthTimelineProps) {
                   background: isActive ? seg.bg : "var(--surface-2)",
                   borderRight: isPause ? "none" : "1px solid var(--surface-6)",
                   position: "relative",
-                  transition: "background 0.5s ease",
+                  transition: "opacity var(--dur-short) var(--ease-in-out)",
                   ...(isPause
                     ? {
                         backgroundImage: isActive
-                          ? "repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(212,168,83,0.1) 2px, rgba(212,168,83,0.1) 4px)"
-                          : "repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.02) 2px, rgba(255,255,255,0.02) 4px)",
+                          ? "repeating-linear-gradient(45deg, transparent, transparent 2px, color-mix(in oklch, var(--color-threshold) 12%, transparent) 2px, color-mix(in oklch, var(--color-threshold) 12%, transparent) 4px)"
+                          : "repeating-linear-gradient(45deg, transparent, transparent 2px, var(--color-rule-2) 2px, var(--color-rule-2) 4px)",
                       }
                     : {}),
                 }}
@@ -197,10 +197,10 @@ const styles: Record<string, React.CSSProperties> = {
     width: "100%",
   },
   labelItem: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 11,
     textAlign: "center",
-    transition: "all 0.4s ease",
+    transition: "opacity var(--dur-short) var(--ease-in-out)",
     overflow: "hidden",
   },
   labelText: {
@@ -240,7 +240,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: "50%",
     border: "2px solid",
     opacity: 0.4,
-    animation: "pulse-glow 2s ease-in-out infinite",
+    animation: "none",
   },
   dayMarkers: {
     position: "relative",
@@ -252,13 +252,13 @@ const styles: Record<string, React.CSSProperties> = {
     top: 0,
   },
   dayNumber: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 9,
     color: "var(--text-dim-25)",
     fontVariantNumeric: "tabular-nums",
   },
   readout: {
-    fontFamily: "'Inter', sans-serif",
+    fontFamily: "var(--font-body)",
     fontSize: 13,
     textAlign: "center",
     marginTop: 2,
