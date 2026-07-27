@@ -18,7 +18,6 @@ import {
   nonaryHoursToConventional,
 } from "../engine/viewModel";
 import type { DawnInfo } from "../services/geo";
-import GalacticSignature from "./GalacticSignature";
 import MonthTimeline from "./MonthTimeline";
 import "./TodayDashboard.css";
 
@@ -124,10 +123,6 @@ export default function TodayDashboard({
           </div>
         </div>
       </section>
-
-      <div className="animate-in animate-in-delay-1">
-        <GalacticSignature date={selectedDate} />
-      </div>
 
       <section className="reading-section animate-in animate-in-delay-1" aria-labelledby="reading-title">
         <div className="section-heading">
