@@ -1,14 +1,34 @@
-/** The conventional Goodman–Martínez–Thompson correlation constant. */
-export const GMT_CORRELATION = 584_283;
+import tzolkinDays from "../../tzolkin_days.json";
+
+/** Permanent anchor for the continuous 260-day count. */
+export const TZOLKIN_ANCHOR_DATE = "2026-07-27";
+export const TZOLKIN_ANCHOR_POSITION = 146;
 
 export const TZOLKIN_DAY_SIGNS = [
-  "Imix’", "Ik’", "Ak’b’al", "K’an", "Chikchan",
-  "Kimi", "Manik’", "Lamat", "Muluk", "Ok",
-  "Chuwen", "Eb’", "B’en", "Ix", "Men",
-  "K’ib’", "Kab’an", "Etz’nab’", "Kawak", "Ajaw",
+  "Imix", "Ik", "Ak'b'al", "K'an", "Chicchan",
+  "Cimi", "Manik", "Lamat", "Muluc", "Oc",
+  "Chuen", "Eb", "Ben", "Ix", "Men",
+  "Cib", "Caban", "Etz'nab", "Cauac", "Ahau",
 ] as const;
 
 export type TzolkinDaySign = (typeof TZOLKIN_DAY_SIGNS)[number];
+
+export interface TzolkinDayMeaning {
+  day_index: number;
+  tone_index: number;
+  tone_name: string;
+  tone_keywords: string[];
+  tone_description: string;
+  sign_index: number;
+  sign_name: string;
+  sign_english_name: string;
+  sign_keywords: string[];
+  sign_description: string;
+  combined_title: string;
+  combined_meaning: string;
+}
+
+export const TZOLKIN_DAYS = tzolkinDays as TzolkinDayMeaning[];
 
 export interface TzolkinReading {
   /** Gregorian date normalized to UTC. */
@@ -23,6 +43,8 @@ export interface TzolkinReading {
   daySignIndex: number;
   /** Position from 1 through 260 in the combined round. */
   position: number;
+  /** Descriptive content mapped to this position in the 260-day dataset. */
+  meaning: TzolkinDayMeaning;
 }
 
 function modulo(value: number, divisor: number): number {
@@ -47,15 +69,18 @@ export function gregorianToJdn(date: Date): number {
     - 32045;
 }
 
-/** Read a Gregorian date in the traditional 260-day count using GMT 584283. */
+const TZOLKIN_ANCHOR_JDN = gregorianToJdn(new Date(`${TZOLKIN_ANCHOR_DATE}T12:00:00Z`));
+
+/** Read a Gregorian date in the continuous, anchor-based 260-day count. */
 export function getTzolkinReading(date: Date): TzolkinReading {
   if (Number.isNaN(date.getTime())) {
     throw new RangeError("getTzolkinReading requires a valid Date");
   }
 
   const julianDayNumber = gregorianToJdn(date);
-  const elapsedDays = julianDayNumber - GMT_CORRELATION;
-  const daySignIndex = modulo(elapsedDays + 19, 20);
+  const elapsedDays = julianDayNumber - TZOLKIN_ANCHOR_JDN;
+  const position = modulo(TZOLKIN_ANCHOR_POSITION - 1 + elapsedDays, 260) + 1;
+  const daySignIndex = modulo(position - 1, 20);
 
   return {
     gregorianDate: [
@@ -64,9 +89,10 @@ export function getTzolkinReading(date: Date): TzolkinReading {
       String(date.getUTCDate()).padStart(2, "0"),
     ].join("-"),
     julianDayNumber,
-    coefficient: modulo(elapsedDays + 3, 13) + 1,
+    coefficient: modulo(position - 1, 13) + 1,
     daySign: TZOLKIN_DAY_SIGNS[daySignIndex],
     daySignIndex,
-    position: modulo(elapsedDays, 260) + 1,
+    position,
+    meaning: TZOLKIN_DAYS[position - 1],
   };
 }
