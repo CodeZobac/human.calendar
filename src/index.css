@@ -404,22 +404,58 @@ body { overflow-x: clip; }
 html { scroll-behavior: auto; }
 body {
   color: var(--color-ink);
-  background: var(--color-paper);
+  background:
+    radial-gradient(120% 85% at 50% -10%, color-mix(in oklch, var(--nebula-haze) 55%, transparent), transparent 62%),
+    radial-gradient(140% 100% at 50% 115%, color-mix(in oklch, var(--nebula-haze) 35%, transparent), transparent 55%),
+    var(--color-paper);
   transition: background-color var(--dur-short) var(--ease-in-out), color var(--dur-short) var(--ease-in-out);
 }
+/* Nebula clouds — oversized so the slow drift never exposes an edge. */
 body::before {
+  inset: -22%;
+  z-index: -2;
   background:
-    radial-gradient(circle at 14% 16%, color-mix(in oklch, var(--color-nebula) 18%, transparent), transparent 27rem),
-    radial-gradient(circle at 86% 78%, color-mix(in oklch, var(--color-nebula) 12%, transparent), transparent 32rem);
+    radial-gradient(44rem 30rem at 16% 20%, var(--nebula-teal), transparent 68%),
+    radial-gradient(52rem 36rem at 84% 12%, var(--nebula-violet), transparent 70%),
+    radial-gradient(48rem 42rem at 74% 82%, var(--nebula-rose), transparent 70%),
+    radial-gradient(30rem 22rem at 26% 88%, var(--nebula-amber), transparent 68%),
+    radial-gradient(26rem 19rem at 52% 46%, var(--nebula-core), transparent 72%),
+    conic-gradient(from 210deg at 60% 40%, transparent 0deg, color-mix(in oklch, var(--nebula-violet) 24%, transparent) 110deg, transparent 220deg, color-mix(in oklch, var(--nebula-teal) 18%, transparent) 300deg, transparent 360deg);
+  filter: blur(44px) saturate(112%);
+  transform: translate3d(0, 0, 0);
+  animation: nebula-drift 150s var(--ease-in-out) infinite alternate;
+  will-change: transform;
 }
+/* Star field — three repeating depths plus a handful of fixed bright glints. */
 body::after {
-  opacity: 0.28;
+  inset: 0;
+  z-index: -1;
   background-image:
-    radial-gradient(circle, color-mix(in oklch, var(--color-star) 48%, transparent) 0.5px, transparent 0.8px),
-    radial-gradient(circle, color-mix(in oklch, var(--color-star) 28%, transparent) 0.7px, transparent 1px);
-  background-position: 0 0, 1.2rem 1.8rem;
-  background-size: 3.5rem 3.5rem, 5.5rem 5.5rem;
+    radial-gradient(circle, var(--star-bright) 1px, transparent 1.7px),
+    radial-gradient(circle, var(--star-faint) 0.7px, transparent 1.2px),
+    radial-gradient(circle, var(--star-faint) 0.5px, transparent 0.9px),
+    radial-gradient(2.2px 2.2px at 21% 27%, var(--star-bright), transparent),
+    radial-gradient(2.4px 2.4px at 71% 14%, var(--star-bright), transparent),
+    radial-gradient(2px 2px at 84% 63%, var(--star-bright), transparent),
+    radial-gradient(2.4px 2.4px at 38% 76%, var(--star-bright), transparent),
+    radial-gradient(2px 2px at 57% 41%, var(--star-bright), transparent);
+  background-repeat: repeat, repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-position: 0 0, 2.3rem 3.1rem, 1.1rem 0.7rem, 0 0, 0 0, 0 0, 0 0, 0 0;
+  background-size: 12rem 14rem, 7.5rem 9rem, 4.5rem 5.5rem, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
   mask-image: none;
+  animation: star-twinkle 9s var(--ease-in-out) infinite alternate;
+}
+@keyframes nebula-drift {
+  0% { transform: translate3d(-2.5%, -1.5%, 0) rotate(-1.6deg) scale(1); }
+  50% { transform: translate3d(1.5%, 2%, 0) rotate(0.4deg) scale(1.06); }
+  100% { transform: translate3d(3%, -2%, 0) rotate(1.8deg) scale(1.02); }
+}
+@keyframes star-twinkle {
+  from { opacity: 0.62; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before, body::after { animation: none; }
 }
 button,
 input { min-height: 2.75rem; }

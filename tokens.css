@@ -15,6 +15,14 @@
   --color-focus: oklch(76% 0.2 292);
   --color-nebula: oklch(60% 0.14 292);
   --color-star: oklch(94% 0.012 275);
+  --nebula-violet: oklch(42% 0.17 300 / 0.5);
+  --nebula-teal: oklch(48% 0.11 225 / 0.38);
+  --nebula-rose: oklch(44% 0.15 345 / 0.32);
+  --nebula-amber: oklch(58% 0.12 70 / 0.2);
+  --nebula-core: oklch(52% 0.16 285 / 0.26);
+  --nebula-haze: oklch(30% 0.06 275 / 0.55);
+  --star-bright: oklch(97% 0.01 275 / 0.9);
+  --star-faint: oklch(92% 0.015 275 / 0.42);
   --color-shadow: oklch(4% 0.02 270 / 0.5);
   --color-overlay: oklch(12% 0.025 270 / 0.9);
 
@@ -94,6 +102,14 @@
   --color-focus: oklch(40% 0.2 292);
   --color-nebula: oklch(43% 0.14 292);
   --color-star: oklch(27% 0.04 260);
+  --nebula-violet: oklch(78% 0.09 300 / 0.55);
+  --nebula-teal: oklch(83% 0.07 225 / 0.5);
+  --nebula-rose: oklch(84% 0.08 350 / 0.42);
+  --nebula-amber: oklch(88% 0.08 80 / 0.38);
+  --nebula-core: oklch(80% 0.08 285 / 0.4);
+  --nebula-haze: oklch(90% 0.03 260 / 0.5);
+  --star-bright: oklch(32% 0.06 280 / 0.55);
+  --star-faint: oklch(38% 0.05 275 / 0.3);
   --color-shadow: oklch(26% 0.04 260 / 0.18);
   --color-overlay: oklch(96% 0.018 245 / 0.92);
   --color-solar: oklch(49% 0.14 72);

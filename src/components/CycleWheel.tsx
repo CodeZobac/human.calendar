@@ -130,7 +130,7 @@ export default function CycleWheel({
             y={ly}
             textAnchor="middle"
             dominantBaseline="central"
-            fill={isActive ? "#fff" : "var(--text-dim-35)"}
+            fill={isActive ? "var(--color-accent-ink)" : "var(--text-dim-35)"}
             fontSize={isActive ? 13 : 11}
             fontFamily="var(--font-display)"
             fontWeight={isActive ? 600 : 400}
