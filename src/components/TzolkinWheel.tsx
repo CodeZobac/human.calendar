@@ -1,22 +1,39 @@
-import { TZOLKIN_DAY_SIGNS, type TzolkinReading } from "../engine/tzolkin";
 import { WHEEL, fmt, gearOutline, numberWheelAngle, point, signWheelAngle } from "./tzolkinWheelGeometry";
 
+/**
+ * A count-agnostic reading. Both the traditional Tzolk'in and the Dreamspell
+ * count are 13 tones against 20 day signs, so the same gear pair renders
+ * either one — only the labels and the active indices differ.
+ */
+export interface WheelReading {
+  /** Active coefficient / galactic tone, 1–13. */
+  tone: number;
+  /** Zero-based index of the active day sign / solar seal. */
+  signIndex: number;
+  /** The twenty day-sign or solar-seal names, in count order. */
+  signLabels: readonly string[];
+  /** Position in the 260-day round, 1–260. */
+  position: number;
+  /** Human-readable name of the active sign, for the accessible title. */
+  signName: string;
+}
+
 interface TzolkinWheelProps {
-  reading: TzolkinReading;
+  reading: WheelReading;
 }
 
 export default function TzolkinWheel({ reading }: TzolkinWheelProps) {
   const N = WHEEL.number;
   const S = WHEEL.sign;
   const C = WHEEL.contact;
-  const numberAngle = numberWheelAngle(reading.coefficient);
-  const signAngle = signWheelAngle(reading.daySignIndex);
-  const activeNotch = point(S.cx, S.cy, S.pitch, -reading.daySignIndex * 18);
+  const numberAngle = numberWheelAngle(reading.tone);
+  const signAngle = signWheelAngle(reading.signIndex);
+  const activeNotch = point(S.cx, S.cy, S.pitch, -reading.signIndex * 18);
 
   return (
     <svg viewBox="0 0 650 390" role="img" aria-labelledby="tz-wheel-title tz-wheel-desc">
       <title id="tz-wheel-title">
-        {`${reading.coefficient} ${reading.daySign}, day ${reading.position} of 260`}
+        {`${reading.tone} ${reading.signName}, day ${reading.position} of 260`}
       </title>
       <desc id="tz-wheel-desc">
         Two meshed wheels: thirteen number teeth engage twenty day-sign notches. The active
@@ -42,13 +59,13 @@ export default function TzolkinWheel({ reading }: TzolkinWheelProps) {
         <circle className="tz-hub" cx={S.cx} cy={S.cy} r={S.hub} />
         <circle className="tz-pin" cx={S.cx} cy={S.cy} r={2.5} />
         <circle className="tz-notch-active" cx={fmt(activeNotch.x)} cy={fmt(activeNotch.y)} r={S.notch} />
-        {TZOLKIN_DAY_SIGNS.map((sign, index) => {
+        {reading.signLabels.map((sign, index) => {
           const angle = -index * (360 / S.count);
           const dot = point(S.cx, S.cy, S.dot, angle);
           const label = point(S.cx, S.cy, S.label, angle);
-          const offset = Math.abs(index - reading.daySignIndex);
+          const offset = Math.abs(index - reading.signIndex);
           const distance = Math.min(offset, S.count - offset) * (360 / S.count);
-          const active = index === reading.daySignIndex;
+          const active = index === reading.signIndex;
           return (
             <g key={sign}>
               <circle
@@ -86,7 +103,7 @@ export default function TzolkinWheel({ reading }: TzolkinWheelProps) {
         {Array.from({ length: N.count }, (_, index) => {
           const angle = index * (360 / N.count);
           const p = point(N.cx, N.cy, N.pitch, angle);
-          const active = index === reading.coefficient - 1;
+          const active = index === reading.tone - 1;
           return (
             <g key={index} transform={`translate(${fmt(p.x)} ${fmt(p.y)})`}>
               <circle className={`tz-tooth-disc${active ? " is-active" : ""}`} r={10.5} />

@@ -97,3 +97,183 @@
   .motion-previous .tz-number-wheel, .motion-previous .tz-sign-wheel { animation: tz-fade 150ms linear; }
   .motion-jump { animation-duration: 150ms; }
 }
+
+/* ── Kin colour families ───────────────────────────────────────────────────
+   The wheel and readings take their accent from the active kin's colour. */
+.tzolkin-page { --kin-accent: var(--tzolkin-contact); --kin-glow: rgba(154, 140, 255, 0.14); }
+.tzolkin-page.is-red { --kin-accent: #e8776b; --kin-glow: rgba(232, 119, 107, 0.13); }
+.tzolkin-page.is-white { --kin-accent: #b9c0d4; --kin-glow: rgba(185, 192, 212, 0.16); }
+.tzolkin-page.is-blue { --kin-accent: #7fb4e8; --kin-glow: rgba(127, 180, 232, 0.13); }
+.tzolkin-page.is-yellow { --kin-accent: #e8c46b; --kin-glow: rgba(232, 196, 107, 0.13); }
+[data-theme="light"] .tzolkin-page.is-red { --kin-accent: #b8392c; --kin-glow: rgba(184, 57, 44, 0.1); }
+[data-theme="light"] .tzolkin-page.is-white { --kin-accent: #5d6478; --kin-glow: rgba(93, 100, 120, 0.1); }
+[data-theme="light"] .tzolkin-page.is-blue { --kin-accent: #2f6ba8; --kin-glow: rgba(47, 107, 168, 0.1); }
+[data-theme="light"] .tzolkin-page.is-yellow { --kin-accent: #96700f; --kin-glow: rgba(150, 112, 15, 0.1); }
+
+/* The gears pick up the kin colour on the sign wheel and contact glow. */
+.tzolkin-page .tz-gear--sign { fill: var(--kin-glow); stroke: var(--kin-accent); }
+.tzolkin-page .tz-notch-active { fill: var(--kin-glow); stroke: var(--kin-accent); }
+.tzolkin-page .tz-sign-dot { fill: var(--kin-accent); }
+.tzolkin-page .tz-sign-name.is-active { fill: var(--kin-accent); }
+.tzolkin-page .tz-glow-stop { stop-color: var(--kin-accent); }
+.tzolkin-stage.is-paused svg { opacity: .55; }
+
+/* ── Reading rail additions ───────────────────────────────────────────────- */
+.tzolkin-reading__signature {
+  margin-top: .1rem;
+  color: var(--kin-accent);
+  font-size: .92rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+.tzolkin-reading__moon {
+  margin-top: 1rem;
+  padding-top: .9rem;
+  border-top: 1px solid var(--tzolkin-rule);
+}
+.tzolkin-reading__moon strong {
+  display: block;
+  color: var(--text-primary);
+  font: 500 1.5rem/1.1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+.tzolkin-reading__moon span {
+  display: block;
+  margin-top: .2rem;
+  color: var(--text-secondary);
+  font-size: .78rem;
+}
+
+/* ── Detail panels ─────────────────────────────────────────────────────────- */
+.tzolkin-detail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 1.25rem;
+  background: var(--tzolkin-rule);
+  border: 1px solid var(--tzolkin-rule);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.tz-panel { padding: clamp(1.25rem, 3vw, 1.9rem); background: var(--tzolkin-surface); }
+.tz-panel--affirmation { grid-column: 1 / -1; }
+
+.galactic-label {
+  display: block;
+  margin-bottom: .9rem;
+  color: var(--text-muted);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+.galactic-affirmation {
+  margin: 0;
+  padding: .9rem 0 .9rem 1.1rem;
+  border-left: 2px solid var(--kin-accent);
+  background: var(--kin-glow);
+  color: var(--text-primary);
+  font: 400 1.08rem/1.7 var(--font-display);
+  font-style: italic;
+}
+.galactic-question {
+  margin-top: 1.2rem;
+  color: var(--text-primary);
+  font: 400 1.1rem/1.6 var(--font-display);
+  font-style: italic;
+}
+.galactic-question span {
+  display: block;
+  margin-bottom: .3rem;
+  color: var(--text-muted);
+  font: 700 .62rem/1 var(--font-body);
+  font-style: normal;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.galactic-gloss {
+  margin-bottom: 1.3rem;
+  color: var(--text-primary);
+  font: 400 1.02rem/1.7 var(--font-display);
+}
+.galactic-facts { display: grid; gap: .9rem 1.5rem; }
+.galactic-facts--wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.galactic-facts dt {
+  color: var(--text-muted);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.galactic-facts dd { margin-top: .2rem; color: var(--text-secondary); font-size: .83rem; line-height: 1.5; }
+
+.tz-oracle { list-style: none; display: grid; gap: .5rem; }
+.tz-oracle li {
+  display: grid;
+  grid-template-columns: 7rem 4.5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: .75rem;
+  padding: .6rem .75rem;
+  border-radius: .6rem;
+  background: var(--surface-2);
+}
+.tz-oracle li.is-self { background: var(--kin-glow); box-shadow: inset 2px 0 0 var(--kin-accent); }
+.galactic-oracle__role {
+  color: var(--text-muted);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.galactic-oracle__kin {
+  color: var(--text-primary);
+  font-size: .78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.galactic-oracle__name { color: var(--text-secondary); font-size: .8rem; line-height: 1.4; }
+
+.tz-moonbar { display: grid; grid-template-columns: repeat(28, 1fr); gap: 2px; margin-bottom: 1.4rem; }
+.tz-moonbar span {
+  height: 1.5rem;
+  border-radius: 2px;
+  border: 1px solid var(--tzolkin-rule);
+  background: transparent;
+  transition: background var(--dur-short, 220ms) var(--ease-out);
+}
+.tz-moonbar span.is-filled { border-color: transparent; background: var(--kin-accent); }
+.tz-moonbar span:nth-child(7n):not(:last-child) { margin-right: 4px; }
+
+@media (max-width: 61.99rem) {
+  .tzolkin-detail { grid-template-columns: 1fr; }
+}
+@media (max-width: 39.99rem) {
+  .galactic-facts--wide { grid-template-columns: 1fr; }
+  .tz-oracle li { grid-template-columns: 1fr auto; row-gap: .15rem; }
+  .galactic-oracle__name { grid-column: 1 / -1; }
+  .tz-moonbar span { height: 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tz-moonbar span { transition-duration: 0ms; }
+}
+
+/* Odd panel counts leave empty grid cells that expose the rule colour as a
+   solid block. Span the trailing panel so every row is filled. */
+.tzolkin-detail > .tz-panel:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.tzolkin-notes > article:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+/* The sign name in the reading rail should match the kin's colour family,
+   not the fixed cyan the traditional count used. */
+.tzolkin-page .tzolkin-reading__primary span { color: var(--kin-accent); }
+.tzolkin-page .tzolkin-legend li.is-active { color: var(--kin-accent); background: var(--kin-glow); }
+
+/* The legend lists solar seals; seal 9 is named "Moon", which reads as a
+   month number without this clarification. */
+.tzolkin-legend__note {
+  margin-top: .6rem;
+  max-width: 46rem;
+  color: var(--text-secondary);
+  font-size: .82rem;
+  line-height: 1.65;
+}
+.tzolkin-legend li span { font-size: .58rem; letter-spacing: .06em; text-transform: uppercase; }
