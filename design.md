@@ -14,7 +14,7 @@ Atmospheric: a cinematic celestial instrument whose readings remain the visual p
 
 ## Theme
 
-Custom tuned cosmic blue/violet. Dark mode uses deep navy papers and luminous violet atmosphere; light mode uses pale celestial blue papers and dark violet signals. Cycle colours appear only when they encode data.
+Custom tuned cosmic blue/violet, dark mode only. Deep navy papers support a luminous violet atmosphere; elevated instruments use a distinct blue-black surface and brighter orbital rules so diagrams never disappear into the canvas. Cycle colours appear only when they encode data.
 
 ## Typography
 
@@ -45,7 +45,7 @@ Opaque elevated instrument surfaces, sparse orbital rules, static star field, an
 
 ## What views must share
 
-Semantic tokens, fonts, focus ring, control states, opaque surfaces, diagram/readout split, mobile collapse, and theme persistence through `localStorage["theme"]`.
+Semantic tokens, fonts, focus ring, control states, opaque surfaces, diagram/readout split, mobile collapse, and a single dark colour scheme.
 
 ## Exports
 

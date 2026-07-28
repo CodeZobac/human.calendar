@@ -5,144 +5,10 @@
  * honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass (49) · icons: pass (30)
  * mobile: pass (34, 49, 50–57) · pre-emit critique: P5 H5 E4 S5 R5 V5
  */
-:root {
-  color-scheme: dark;
-  --bg-deep: #070914;
-  --bg-primary: #0d1020;
-  --bg-surface: #121629;
-  --bg-elevated: #191d34;
-  --bg-glass: rgba(17, 21, 39, 0.78);
-  --nav-bg: rgba(12, 15, 29, 0.86);
-  --text-primary: #f1eee7;
-  --text-secondary: #aaa8b5;
-  --text-muted: #777789;
-  --text-accent: #e6b35a;
-  --solar-50: #fff8e7;
-  --solar-200: #f2d18c;
-  --solar-400: #e6b35a;
-  --solar-500: #c98e35;
-  --solar-600: #9e6826;
-  --solar-glow: rgba(230, 179, 90, 0.13);
-  --lunar-200: #d7e8f4;
-  --lunar-400: #9dc7e8;
-  --lunar-500: #719cc2;
-  --lunar-glow: rgba(157, 199, 232, 0.13);
-  --violet: #9a8cff;
-  --violet-glow: rgba(154, 140, 255, 0.16);
-  --band-beginning: #54d6a2;
-  --band-beginning-bg: rgba(84, 214, 162, 0.12);
-  --band-middle: #f2c66d;
-  --band-middle-bg: rgba(242, 198, 109, 0.12);
-  --band-end: #f28a65;
-  --band-end-bg: rgba(242, 138, 101, 0.12);
-  --band-threshold: #a98cff;
-  --band-threshold-bg: rgba(169, 140, 255, 0.12);
-  --band-rest: #7c849b;
-  --band-rest-bg: rgba(124, 132, 155, 0.1);
-  --growth: #54d6a2;
-  --growth-bg: rgba(84, 214, 162, 0.1);
-  --peak: #f2c66d;
-  --peak-bg: rgba(242, 198, 109, 0.1);
-  --decline: #ef9d59;
-  --decline-bg: rgba(239, 157, 89, 0.1);
-  --border-subtle: rgba(241, 238, 231, 0.08);
-  --border-medium: rgba(241, 238, 231, 0.14);
-  --border-accent: rgba(230, 179, 90, 0.4);
-  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 22px 70px rgba(0, 0, 0, 0.25);
-  --shadow-lg: 0 28px 90px rgba(0, 0, 0, 0.42);
-  --shadow-glow-solar: 0 0 36px rgba(230, 179, 90, 0.13);
-  --shadow-glow-lunar: 0 0 36px rgba(157, 199, 232, 0.13);
-  --font-body: "Manrope", "Inter", system-ui, sans-serif;
-  --font-display: "Cormorant Garamond", "Outfit", Georgia, serif;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 36px;
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: var(--ease-out);
-  --text-dim-50: rgba(241, 238, 231, 0.64);
-  --text-dim-45: rgba(241, 238, 231, 0.58);
-  --text-dim-40: rgba(241, 238, 231, 0.52);
-  --text-dim-35: rgba(241, 238, 231, 0.46);
-  --text-dim-30: rgba(241, 238, 231, 0.4);
-  --text-dim-25: rgba(241, 238, 231, 0.34);
-  --text-dim-20: rgba(241, 238, 231, 0.28);
-  --text-dim-15: rgba(241, 238, 231, 0.2);
-  --text-dim-10: rgba(241, 238, 231, 0.13);
-  --surface-2: rgba(255, 255, 255, 0.025);
-  --surface-3: rgba(255, 255, 255, 0.035);
-  --surface-4: rgba(255, 255, 255, 0.05);
-  --surface-6: rgba(255, 255, 255, 0.07);
-  --surface-8: rgba(255, 255, 255, 0.09);
-  --surface-10: rgba(255, 255, 255, 0.12);
-  --input-text: #f1eee7;
-  --input-bg: rgba(255, 255, 255, 0.055);
-  --input-border: rgba(255, 255, 255, 0.14);
-  --tab-bar-bg: var(--nav-bg);
-  --tab-bar-border: var(--border-subtle);
-  --tab-inactive: var(--text-muted);
-  --color-scheme: dark;
-}
-
 /* Hallmark · genre: atmospheric · macrostructure: Map / Diagram · design-system: design.md · designed-as-app
  * nav: N5 content-sized/solid/top-centred · footer: Ft2 dense/middot · enrichment: static CSS atmosphere
  * audience: precise daily readers + poetic explorers · tone: cinematic, technical, restrained
  */
-
-[data-theme="light"] {
-  color-scheme: light;
-  --bg-deep: #f3efe6;
-  --bg-primary: #faf7f0;
-  --bg-surface: #ece7dc;
-  --bg-elevated: #fffdf8;
-  --bg-glass: rgba(255, 253, 248, 0.82);
-  --nav-bg: rgba(250, 247, 240, 0.9);
-  --text-primary: #262536;
-  --text-secondary: #5e5b69;
-  --text-muted: #77727d;
-  --text-accent: #9f681f;
-  --solar-50: #fff8e7;
-  --solar-200: #ad7628;
-  --solar-400: #9f681f;
-  --solar-500: #865317;
-  --solar-600: #693d10;
-  --solar-glow: rgba(159, 104, 31, 0.12);
-  --lunar-200: #567fa6;
-  --lunar-400: #416b92;
-  --lunar-500: #315678;
-  --lunar-glow: rgba(65, 107, 146, 0.12);
-  --violet: #6958c9;
-  --violet-glow: rgba(105, 88, 201, 0.12);
-  --border-subtle: rgba(38, 37, 54, 0.09);
-  --border-medium: rgba(38, 37, 54, 0.15);
-  --border-accent: rgba(159, 104, 31, 0.35);
-  --shadow-sm: 0 8px 24px rgba(74, 61, 42, 0.07);
-  --shadow-md: 0 22px 65px rgba(74, 61, 42, 0.09);
-  --shadow-lg: 0 26px 80px rgba(74, 61, 42, 0.14);
-  --shadow-glow-solar: 0 0 30px rgba(159, 104, 31, 0.09);
-  --shadow-glow-lunar: 0 0 30px rgba(65, 107, 146, 0.09);
-  --text-dim-50: rgba(38, 37, 54, 0.66);
-  --text-dim-45: rgba(38, 37, 54, 0.6);
-  --text-dim-40: rgba(38, 37, 54, 0.54);
-  --text-dim-35: rgba(38, 37, 54, 0.48);
-  --text-dim-30: rgba(38, 37, 54, 0.42);
-  --text-dim-25: rgba(38, 37, 54, 0.36);
-  --text-dim-20: rgba(38, 37, 54, 0.3);
-  --text-dim-15: rgba(38, 37, 54, 0.23);
-  --text-dim-10: rgba(38, 37, 54, 0.16);
-  --surface-2: rgba(38, 37, 54, 0.025);
-  --surface-3: rgba(38, 37, 54, 0.035);
-  --surface-4: rgba(38, 37, 54, 0.05);
-  --surface-6: rgba(38, 37, 54, 0.07);
-  --surface-8: rgba(38, 37, 54, 0.09);
-  --surface-10: rgba(38, 37, 54, 0.12);
-  --input-text: #262536;
-  --input-bg: rgba(38, 37, 54, 0.04);
-  --input-border: rgba(38, 37, 54, 0.15);
-  --tab-inactive: #706c78;
-  --color-scheme: light;
-}
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
@@ -243,7 +109,6 @@ button:focus-visible, input:focus-visible {
 }
 .icon-button:hover { background: var(--surface-8); border-color: var(--border-medium); transform: rotate(8deg); }
 .icon-button svg { width: 1.05rem; height: 1.05rem; }
-.theme-toggle { justify-self: end; }
 .app-main { min-height: calc(100dvh - 5.75rem); }
 .view-page { width: min(100%, 1040px); margin: 0 auto; padding: clamp(2.5rem, 6vw, 5.5rem) 0 5rem; }
 .view-page[aria-label] > div { padding-top: 0 !important; }
@@ -332,8 +197,7 @@ h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; }
 }
 
 /* Cosmic instrument system — compatibility aliases keep existing component props intact. */
-:root,
-[data-theme="light"] {
+:root {
   --bg-deep: var(--color-paper);
   --bg-primary: var(--color-paper);
   --bg-surface: var(--color-paper-2);
@@ -467,8 +331,7 @@ button:disabled { cursor: not-allowed; opacity: 0.45; }
 ::selection { color: var(--color-accent-ink); background: var(--color-accent); }
 .app-shell { width: min(100% - 2rem, 90rem); }
 .site-header { min-height: 6.75rem; border-bottom: 0; }
-.brand-mark,
-.theme-toggle { position: relative; z-index: var(--z-raised); }
+.brand-mark { position: relative; z-index: var(--z-raised); }
 .brand-mark__orbit { border-color: var(--color-accent); }
 .brand-mark__orbit::after { border-color: var(--color-lunar); }
 .brand-mark__orbit span { background: var(--color-accent); box-shadow: none; }

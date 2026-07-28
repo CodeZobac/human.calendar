@@ -16,7 +16,6 @@ import {
   Moon,
   Orbit,
   RotateCw,
-  Sun,
   Target,
 } from "lucide-react";
 
@@ -35,12 +34,6 @@ function fromInputDate(s: string): Date {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>("today");
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    return saved
-      ? saved === "dark"
-      : !window.matchMedia("(prefers-color-scheme: light)").matches;
-  });
   const [pickedDate, setPickedDate] = useState(() => {
     const now = new Date();
     return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 12));
@@ -67,15 +60,6 @@ export default function App() {
     })),
     [activeTab],
   );
-
-  useEffect(() => {
-    const theme = isDark ? "dark" : "light";
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem("theme", theme);
-    document
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", isDark ? "#0b0d1b" : "#edf4ff");
-  }, [isDark]);
 
   useEffect(() => {
     const interval = window.setInterval(() => setLiveNow(new Date()), 30_000);
@@ -149,15 +133,6 @@ export default function App() {
 
         <Dock items={navItems} />
 
-        <button
-          type="button"
-          className="icon-button theme-toggle"
-          onClick={() => setIsDark((value) => !value)}
-          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-        >
-          {isDark ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
-        </button>
       </header>
 
       <main className="app-main" id="main-content">

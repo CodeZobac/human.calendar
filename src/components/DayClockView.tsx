@@ -172,10 +172,10 @@ export default function DayClockView({
               <path
                 key={seg.key}
                 d={arcPath(seg.start, seg.end, OUTER_R, INNER_R)}
-                fill={isActive ? color + "55" : color + "18"}
+                fill={`color-mix(in oklch, ${color} ${isActive ? "34%" : "12%"}, var(--color-wheel-surface))`}
                 stroke={color}
-                strokeWidth={isActive ? 1.5 : 0.5}
-                opacity={isActive ? 1 : 0.5}
+                strokeWidth={isActive ? 2 : 0.8}
+                opacity={isActive ? 1 : 0.82}
                 filter={isActive ? "url(#dc-glow)" : undefined}
                 style={{ transition: "opacity var(--dur-long) var(--ease-out)" }}
               />
@@ -199,17 +199,18 @@ export default function DayClockView({
                   y1={t1y}
                   x2={t2x}
                   y2={t2y}
-                  stroke="var(--text-dim-25)"
-                  strokeWidth={1.5}
+                  stroke="var(--color-wheel-rule)"
+                  strokeWidth={1.8}
                 />
                 <text
                   x={lx}
                   y={ly}
                   textAnchor="middle"
                   dominantBaseline="central"
-                  fill="var(--text-dim-40)"
-                  fontSize={9}
+                  fill="var(--color-wheel-label)"
+                  fontSize={10}
                   fontFamily="var(--font-display)"
+                  fontWeight={600}
                 >
                   {i + 1}
                 </text>
@@ -232,8 +233,8 @@ export default function DayClockView({
                 y={ly}
                 textAnchor="middle"
                 dominantBaseline="central"
-                fill={isActive ? color : color + "88"}
-                fontSize={isActive ? 9 : 7}
+                fill={isActive ? color : "var(--color-wheel-muted)"}
+                fontSize={isActive ? 9 : 8}
                 fontFamily="var(--font-display)"
                 fontWeight={isActive ? 600 : 400}
               >
@@ -247,7 +248,8 @@ export default function DayClockView({
             cx={px}
             cy={py}
             r={10}
-            fill={activeColor + "44"}
+            fill={activeColor}
+            opacity={0.28}
             filter="url(#dc-glow)"
             style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
@@ -258,7 +260,7 @@ export default function DayClockView({
             fill={activeColor}
             style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
-          <circle cx={px} cy={py} r={2} fill="white" />
+          <circle cx={px} cy={py} r={2} fill="var(--color-ink)" />
 
           {/* Centre: H:M:S */}
           <text
@@ -270,7 +272,7 @@ export default function DayClockView({
             fontSize={28}
             fontFamily="var(--font-display)"
             fontWeight={700}
-            style={{ filter: `drop-shadow(0 0 10px ${activeColor}99)` }}
+            style={{ filter: `drop-shadow(0 0 8px ${activeColor})` }}
           >
             {dayClock.hour}:{dayClock.minute}:{dayClock.second}
           </text>
@@ -279,7 +281,7 @@ export default function DayClockView({
             y={CY + 10}
             textAnchor="middle"
             dominantBaseline="central"
-            fill="var(--text-dim-35)"
+            fill="var(--color-wheel-muted)"
             fontSize={9}
             fontFamily="var(--font-body)"
             letterSpacing="2"

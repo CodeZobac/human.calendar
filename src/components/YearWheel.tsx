@@ -141,10 +141,10 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
               <path
                 key={m}
                 d={segPath(startDeg, endDeg, OUTER_R, INNER_R)}
-                fill={isActive ? color + "55" : color + "18"}
+                fill={`color-mix(in oklch, ${color} ${isActive ? "34%" : "12%"}, var(--color-wheel-surface))`}
                 stroke={color}
-                strokeWidth={isActive ? 1.5 : 0.5}
-                opacity={isActive ? 1 : 0.55}
+                strokeWidth={isActive ? 2 : 0.8}
+                opacity={isActive ? 1 : 0.82}
                 filter={isActive ? "url(#yw-glow)" : undefined}
                 style={{ transition: "opacity var(--dur-long) var(--ease-out)" }}
               />
@@ -159,12 +159,6 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             const lx = CX + MID_R * Math.cos(midRad);
             const ly = CY + MID_R * Math.sin(midRad);
             const isActive = m === month;
-            const color =
-              m <= 3
-                ? META_SEASON_COLORS.growth
-                : m <= 6
-                  ? META_SEASON_COLORS.peak
-                  : META_SEASON_COLORS.decline;
             return (
               <text
                 key={m}
@@ -172,8 +166,8 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
                 y={ly}
                 textAnchor="middle"
                 dominantBaseline="central"
-                fill={isActive ? "var(--color-ink)" : color}
-                fontSize={isActive ? 14 : 11}
+                fill={isActive ? "var(--color-ink)" : "var(--color-wheel-label)"}
+                fontSize={isActive ? 15 : 12}
                 fontFamily="var(--font-display)"
                 fontWeight={isActive ? 700 : 400}
                 style={{ transition: "opacity var(--dur-long) var(--ease-out)" }}
@@ -210,8 +204,8 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             y={CY - INNER_R + 18}
             textAnchor="middle"
             dominantBaseline="central"
-            fill="var(--text-dim-30)"
-            fontSize={7}
+            fill="var(--color-wheel-muted)"
+            fontSize={8}
             fontFamily="var(--font-body)"
           >
             ↑ Breath-in
@@ -221,8 +215,8 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             y={CY + INNER_R - 18}
             textAnchor="middle"
             dominantBaseline="central"
-            fill="var(--text-dim-30)"
-            fontSize={7}
+            fill="var(--color-wheel-muted)"
+            fontSize={8}
             fontFamily="var(--font-body)"
           >
             ↓ Breath-out
@@ -233,7 +227,8 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             cx={px}
             cy={py}
             r={10}
-            fill={activeColor + "44"}
+            fill={activeColor}
+            opacity={0.28}
             filter="url(#yw-glow)"
             style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
@@ -244,7 +239,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             fill={activeColor}
             style={{ transition: "transform var(--dur-long) var(--ease-out)" }}
           />
-          <circle cx={px} cy={py} r={2} fill="white" />
+          <circle cx={px} cy={py} r={2} fill="var(--color-ink)" />
 
           {/* Centre info */}
           <text
@@ -256,7 +251,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             fontSize={24}
             fontFamily="var(--font-display)"
             fontWeight={700}
-            style={{ filter: `drop-shadow(0 0 10px ${activeColor}99)` }}
+            style={{ filter: `drop-shadow(0 0 8px ${activeColor})` }}
           >
             {month}
           </text>
@@ -265,7 +260,7 @@ export default function YearWheel({ solarYear }: YearWheelProps) {
             y={CY + 2}
             textAnchor="middle"
             dominantBaseline="central"
-            fill="var(--text-dim-35)"
+            fill="var(--color-wheel-muted)"
             fontSize={8}
             fontFamily="var(--font-body)"
             letterSpacing="1.5"
