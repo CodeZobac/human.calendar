@@ -11,7 +11,7 @@ import {
   META_SEASON_LABELS,
   formatDayClock,
   formatEarthMonth,
-  formatMoonClock,
+  moonPhaseName,
   formatSolarYear,
   lunarIllumination,
   nonaryHoursToConventional,
@@ -156,7 +156,7 @@ export default function TodayDashboard({
           <CelestialDial
             size="sm"
             label="Moon Clock"
-            value={formatMoonClock(moonClock)}
+            value={moonPhaseName(moonClock)}
             detail={`${(lunarIllumination(moonClock.synodicDay) * 100).toFixed(0)}% illuminated`}
             badge={LUNAR_SEGMENT_LABELS[moonClock.segment]}
             color={moonColor}
