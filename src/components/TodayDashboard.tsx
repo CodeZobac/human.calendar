@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
 import type { Reading } from "../engine/types";
 import {
   BREATH_PHASE_LABELS,
@@ -125,47 +125,43 @@ export default function TodayDashboard({
           <span className="epoch-note">Day {Math.floor(reading.elapsedDaysFromYearEpoch)} from year epoch</span>
         </div>
 
-        <div className="reading-grid">
-          <ReadingCard
-            index="01"
+        <div className="clock-constellation">
+          <CelestialDial
+            size="lg"
             label="Day Clock"
             value={formatDayClock(dayClock)}
             detail={`${nonaryHoursToConventional(dayClock.totalNonaryHours)} elapsed`}
             badge={dayClock.segment}
             color={dayColor}
-          >
-            <ProgressBar value={dayProgress} color={dayColor} ticks={8} />
-          </ReadingCard>
-          <ReadingCard
-            index="02"
+            progress={dayProgress}
+          />
+          <CelestialDial
+            size="md"
             label="Solar Year"
             value={formatSolarYear(solarYear)}
             detail={`Day ${solarYear.dayInMonth.toFixed(1)} of 40`}
             badge={`${META_SEASON_EMOJIS[solarYear.metaSeason]} ${META_SEASON_LABELS[solarYear.metaSeason]}`}
             color={seasonColor}
-          >
-            <ProgressBar value={((solarYear.month - 1) / 9) * 100} color={seasonColor} ticks={8} />
-          </ReadingCard>
-          <ReadingCard
-            index="03"
+            progress={((solarYear.month - 1) / 9) * 100}
+          />
+          <CelestialDial
+            size="md"
             label="Earth Month"
             value={formatEarthMonth(earthMonth)}
             detail={`Model · ${earthMonth.model}`}
             badge={EARTH_MONTH_SEGMENT_LABELS[earthMonth.segment]}
             color={earthMonthColor}
-          >
-            <ProgressBar value={((earthMonth.localDay - 1) / 40.58) * 100} color={earthMonthColor} ticks={1} />
-          </ReadingCard>
-          <ReadingCard
-            index="04"
+            progress={((earthMonth.localDay - 1) / 40.58) * 100}
+          />
+          <CelestialDial
+            size="sm"
             label="Moon Clock"
             value={formatMoonClock(moonClock)}
             detail={`${(lunarIllumination(moonClock.synodicDay) * 100).toFixed(0)}% illuminated`}
             badge={LUNAR_SEGMENT_LABELS[moonClock.segment]}
             color={moonColor}
-          >
-            <ProgressBar value={(moonClock.synodicDay / 29.53059) * 100} color={moonColor} ticks={1} />
-          </ReadingCard>
+            progress={(moonClock.synodicDay / 29.53059) * 100}
+          />
         </div>
       </section>
 
@@ -189,46 +185,58 @@ export default function TodayDashboard({
   );
 }
 
-function ReadingCard({
-  index,
+function CelestialDial({
+  size,
   label,
   value,
   detail,
   badge,
   color,
-  children,
+  progress,
 }: {
-  index: string;
+  size: "lg" | "md" | "sm";
   label: string;
   value: string;
   detail: string;
   badge: string;
   color: string;
-  children: ReactNode;
+  progress: number;
 }) {
-  return (
-    <article className="reading-card" style={{ "--card-accent": color } as CSSProperties}>
-      <div className="reading-card__top">
-        <span className="reading-card__index">{index}</span>
-        <span className="reading-card__badge">{badge}</span>
-      </div>
-      <span className="reading-card__label">{label}</span>
-      <strong className="reading-card__value">{value}</strong>
-      <span className="reading-card__detail">{detail}</span>
-      <div className="reading-card__progress">{children}</div>
-    </article>
-  );
-}
+  const R = 78;
+  const CIRC = 2 * Math.PI * R;
+  const p = Math.max(0.5, Math.min(100, progress));
+  const angle = (p / 100) * 2 * Math.PI - Math.PI / 2;
+  const mx = 90 + R * Math.cos(angle);
+  const my = 90 + R * Math.sin(angle);
 
-function ProgressBar({ value, color, ticks }: { value: number; color: string; ticks: number }) {
-  const safeValue = Math.max(0, Math.min(100, value));
   return (
-    <div className="mini-progress" aria-hidden="true">
-      <span className="mini-progress__fill" style={{ width: `${safeValue}%`, background: color }} />
-      <span className="mini-progress__dot" style={{ left: `${safeValue}%`, background: color }} />
-      {Array.from({ length: ticks }, (_, index) => (
-        <i key={index} style={{ left: `${((index + 1) / (ticks + 1)) * 100}%` }} />
-      ))}
-    </div>
+    <article
+      className={`celestial-dial celestial-dial--${size}`}
+      style={{ "--dial-accent": color } as CSSProperties}
+    >
+      <div className="celestial-dial__ring">
+        <svg viewBox="0 0 180 180" aria-hidden="true">
+          <circle className="celestial-dial__track" cx="90" cy="90" r={R} />
+          <circle className="celestial-dial__inner" cx="90" cy="90" r={R - 13} />
+          <circle
+            className="celestial-dial__orbit"
+            cx="90"
+            cy="90"
+            r={R}
+            strokeDasharray={`${(p / 100) * CIRC} ${CIRC}`}
+          />
+          <circle className="celestial-dial__moon-glow" cx={mx} cy={my} r="10" />
+          <circle className="celestial-dial__moon" cx={mx} cy={my} r="4.2" />
+        </svg>
+        <div className="celestial-dial__core">
+          <span className="celestial-dial__label">{label}</span>
+          <strong className="celestial-dial__value">{value}</strong>
+        </div>
+      </div>
+      <div className="celestial-dial__caption">
+        <span className="celestial-dial__badge">{badge}</span>
+        <span className="celestial-dial__detail">{detail}</span>
+      </div>
+    </article>
   );
 }
