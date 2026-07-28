@@ -166,3 +166,18 @@ export function lunarIllumination(synodicDay: number): number {
   const { SYNODIC_MONTH_DAYS } = { SYNODIC_MONTH_DAYS: 29.53059 };
   return (1 - Math.cos((2 * Math.PI * synodicDay) / SYNODIC_MONTH_DAYS)) / 2;
 }
+
+/**
+ * Named moon phase derived from illumination and waxing/waning direction.
+ * "New Moon" → "Waxing Crescent" → "First Quarter" → "Waxing Gibbous" →
+ * "Full Moon" → "Waning Gibbous" → "Last Quarter" → "Waning Crescent"
+ */
+export function moonPhaseName(r: MoonClockReading): string {
+  const illum = lunarIllumination(r.synodicDay);
+  const waxing = r.segment === "breath-in";
+  if (illum < 0.03) return "New Moon";
+  if (illum > 0.97) return "Full Moon";
+  if (illum >= 0.47 && illum <= 0.53) return waxing ? "First Quarter" : "Last Quarter";
+  if (illum < 0.47) return waxing ? "Waxing Crescent" : "Waning Crescent";
+  return waxing ? "Waxing Gibbous" : "Waning Gibbous";
+}
