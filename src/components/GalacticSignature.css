@@ -3,16 +3,10 @@
   --kin-glow: var(--violet-glow);
   margin-top: var(--space-2xl, 4.5rem);
 }
-.galactic-signature.is-red { --kin-accent: #e8776b; --kin-glow: rgba(232, 119, 107, 0.13); }
-.galactic-signature.is-white { --kin-accent: #b9c0d4; --kin-glow: rgba(185, 192, 212, 0.16); }
-.galactic-signature.is-blue { --kin-accent: #7fb4e8; --kin-glow: rgba(127, 180, 232, 0.13); }
-.galactic-signature.is-yellow { --kin-accent: #e8c46b; --kin-glow: rgba(232, 196, 107, 0.13); }
-
-/* Light mode needs deeper accents — the pale families vanish on white paper. */
-[data-theme="light"] .galactic-signature.is-red { --kin-accent: #b8392c; --kin-glow: rgba(184, 57, 44, 0.1); }
-[data-theme="light"] .galactic-signature.is-white { --kin-accent: #5d6478; --kin-glow: rgba(93, 100, 120, 0.1); }
-[data-theme="light"] .galactic-signature.is-blue { --kin-accent: #2f6ba8; --kin-glow: rgba(47, 107, 168, 0.1); }
-[data-theme="light"] .galactic-signature.is-yellow { --kin-accent: #96700f; --kin-glow: rgba(150, 112, 15, 0.1); }
+.galactic-signature.is-red { --kin-accent: var(--kin-red); --kin-glow: var(--kin-red-glow); }
+.galactic-signature.is-white { --kin-accent: var(--kin-white); --kin-glow: var(--kin-white-glow); }
+.galactic-signature.is-blue { --kin-accent: var(--kin-blue); --kin-glow: var(--kin-blue-glow); }
+.galactic-signature.is-yellow { --kin-accent: var(--kin-yellow); --kin-glow: var(--kin-yellow-glow); }
 
 .galactic-grid {
   display: grid;
@@ -32,7 +26,7 @@
   display: block;
   margin-bottom: 0.9rem;
   color: var(--text-muted);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -129,7 +123,7 @@
 .galactic-moon .galactic-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .galactic-facts dt {
   color: var(--text-muted);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -176,7 +170,7 @@
 }
 .galactic-oracle__role {
   color: var(--text-muted);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;

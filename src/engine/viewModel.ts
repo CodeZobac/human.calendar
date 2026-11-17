@@ -28,40 +28,40 @@ import { LUNAR_PHASE_UNIT_DAYS } from "./astronomy";
 // ─── Segment labels ────────────────────────────────────────────────────────────
 
 export const DAY_SEGMENT_LABELS: Record<DaySegment, string> = {
-  dawn: "Dawn",
-  day: "Day",
-  dusk: "Dusk",
-  night: "Night",
+  dawn: "Aurora",
+  day: "Dia",
+  dusk: "Crepúsculo",
+  night: "Noite",
 };
 
 export const BREATH_PHASE_LABELS: Record<BreathPhase, string> = {
-  "breath-in": "Breath-in",
-  reversal: "Reversal",
-  "breath-out": "Breath-out",
+  "breath-in": "Inspiração",
+  reversal: "Inversão",
+  "breath-out": "Expiração",
 };
 
 export const META_SEASON_LABELS: Record<NonaryMetaSeason, string> = {
+  growth: "Crescimento",
+  peak: "Auge",
+  decline: "Declínio",
+};
+
+export const META_SEASON_EMOJIS: Record<NonaryMetaSeason, string> = {
   growth: "",
   peak: "",
   decline: "",
 };
 
-export const META_SEASON_EMOJIS: Record<NonaryMetaSeason, string> = {
-  growth: "Growth",
-  peak: "Peak",
-  decline: "Decline",
-};
-
 export const EARTH_MONTH_SEGMENT_LABELS: Record<EarthMonthSegment, string> = {
-  "grow-in": "Grow-in",
-  "pause-1": "Pause",
-  "grow-out": "Grow-out",
-  "pause-2": "Pause",
+  "grow-in": "Expansão",
+  "pause-1": "Pausa",
+  "grow-out": "Recolha",
+  "pause-2": "Pausa",
 };
 
 export const LUNAR_SEGMENT_LABELS: Record<LunarSegment, string> = {
-  "breath-in": "Breath-in",
-  "breath-out": "Breath-out",
+  "breath-in": "Inspiração",
+  "breath-out": "Expiração",
 };
 
 // ─── Meta-season colors ────────────────────────────────────────────────────────
@@ -99,7 +99,7 @@ export function formatDayClock(r: DayClockReading): string {
  * "Month 3 / Growth / Breath-in"
  */
 export function formatSolarYear(r: SolarYearReading): string {
-  return `Month ${r.month} / ${META_SEASON_LABELS[r.metaSeason]} / ${BREATH_PHASE_LABELS[r.breathPhase]}`;
+  return `Mês ${r.month} / ${META_SEASON_LABELS[r.metaSeason]} / ${BREATH_PHASE_LABELS[r.breathPhase]}`;
 }
 
 /**
@@ -107,7 +107,7 @@ export function formatSolarYear(r: SolarYearReading): string {
  */
 export function formatEarthMonth(r: EarthMonthReading): string {
   const segLabel = EARTH_MONTH_SEGMENT_LABELS[r.segment];
-  return `${segLabel} — Day ${r.localDay.toFixed(1)}`;
+  return `${segLabel} — Dia ${r.localDay.toFixed(1)}`;
 }
 
 /**
@@ -119,11 +119,11 @@ export function formatMoonClock(r: MoonClockReading): string {
   const lunarPhase = r.synodicDay / LUNAR_PHASE_UNIT_DAYS;
   const peak =
     r.phasePeak === "full-moon"
-      ? " ● Full Moon"
+      ? " ● Lua Cheia"
       : r.phasePeak === "new-moon"
-        ? " ● New Moon"
+        ? " ● Lua Nova"
         : "";
-  return `${segLabel} — phase ${lunarPhase.toFixed(1)}${peak}`;
+  return `${segLabel} — fase ${lunarPhase.toFixed(1)}${peak}`;
 }
 
 /**
@@ -175,9 +175,9 @@ export function lunarIllumination(synodicDay: number): number {
 export function moonPhaseName(r: MoonClockReading): string {
   const illum = lunarIllumination(r.synodicDay);
   const waxing = r.segment === "breath-in";
-  if (illum < 0.03) return "New Moon";
-  if (illum > 0.97) return "Full Moon";
-  if (illum >= 0.47 && illum <= 0.53) return waxing ? "First Quarter" : "Last Quarter";
-  if (illum < 0.47) return waxing ? "Waxing Crescent" : "Waning Crescent";
-  return waxing ? "Waxing Gibbous" : "Waning Gibbous";
+  if (illum < 0.03) return "Lua Nova";
+  if (illum > 0.97) return "Lua Cheia";
+  if (illum >= 0.47 && illum <= 0.53) return waxing ? "Quarto Crescente" : "Quarto Minguante";
+  if (illum < 0.47) return waxing ? "Lua Crescente" : "Lua Minguante";
+  return waxing ? "Gibosa Crescente" : "Gibosa Minguante";
 }

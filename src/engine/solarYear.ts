@@ -1,7 +1,7 @@
 /**
  * Human Cycles — Solar Year Module
  *
- * 9-month year structure anchored to February 1:
+ * 9-month year structure anchored to the Winter Solstice (see EPOCH in astronomy.ts):
  *
  *   Breath-in    : days 0   – 180        (months 1–4 mid)
  *   Mid reversal : days 180 – 182.621    (2.621 days)

@@ -205,7 +205,7 @@ export async function getDawnInfo(date: Date): Promise<DawnInfo> {
   let dailyDriftMinutes = 0;
   if (tomorrowResult.status === 'fulfilled') {
     dailyDriftMinutes =
-      (tomorrowResult.value.sunrise.getTime() - sunrise.getTime()) / 60_000;
+      (tomorrowResult.value.sunrise.getTime() - sunrise.getTime()) / 60_000 - 1440;
   }
 
   return { sunrise, sunset, dailyDriftMinutes, location, dateStr, source };

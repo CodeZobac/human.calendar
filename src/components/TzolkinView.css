@@ -1,4 +1,4 @@
-.tzolkin-page { width: min(100%, 1120px); --kin-accent: var(--tzolkin-contact); --kin-glow: rgba(154, 140, 255, 0.14); }
+.tzolkin-page { width: min(100%, 1120px); --kin-accent: var(--tzolkin-contact); --kin-glow: var(--tzolkin-contact-glow); }
 .tzolkin-heading { max-width: 48rem; margin-bottom: 2rem; }
 .tzolkin-instrument {
   display: grid;

@@ -1,8 +1,5 @@
 import tzolkinDays from "../../tzolkin_days.json";
-
-/** Permanent anchor for the continuous 260-day count. */
-export const TZOLKIN_ANCHOR_DATE = "2026-07-27";
-export const TZOLKIN_ANCHOR_POSITION = 146;
+import { getKin } from "./dreamspell";
 
 export const TZOLKIN_DAY_SIGNS = [
   "Imix", "Ik", "Ak'b'al", "K'an", "Chicchan",
@@ -45,6 +42,8 @@ export interface TzolkinReading {
   position: number;
   /** Descriptive content mapped to this position in the 260-day dataset. */
   meaning: TzolkinDayMeaning;
+  /** True on 29 February: 0.0 Hunab Ku, a day outside the count. The Kin of 28 February is held. */
+  hunabKu: boolean;
 }
 
 function modulo(value: number, divisor: number): number {
@@ -69,17 +68,16 @@ export function gregorianToJdn(date: Date): number {
     - 32045;
 }
 
-const TZOLKIN_ANCHOR_JDN = gregorianToJdn(new Date(`${TZOLKIN_ANCHOR_DATE}T12:00:00Z`));
-
-/** Read a Gregorian date in the continuous, anchor-based 260-day count. */
+/** Read a Gregorian date in the Dreamspell 260-Kin count (anchor and leap rule: engine/dreamspell.ts). */
 export function getTzolkinReading(date: Date): TzolkinReading {
   if (Number.isNaN(date.getTime())) {
     throw new RangeError("getTzolkinReading requires a valid Date");
   }
 
   const julianDayNumber = gregorianToJdn(date);
-  const elapsedDays = julianDayNumber - TZOLKIN_ANCHOR_JDN;
-  const position = modulo(TZOLKIN_ANCHOR_POSITION - 1 + elapsedDays, 260) + 1;
+  const kin = getKin(date);
+  // 29 February has no Kin of its own; the wheels stay where 28 February left them.
+  const position = kin ?? getKin(new Date(date.getTime() - 86_400_000))!;
   const daySignIndex = modulo(position - 1, 20);
 
   return {
@@ -94,5 +92,6 @@ export function getTzolkinReading(date: Date): TzolkinReading {
     daySignIndex,
     position,
     meaning: TZOLKIN_DAYS[position - 1],
+    hunabKu: kin === null,
   };
 }

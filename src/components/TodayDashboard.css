@@ -1,269 +1,81 @@
-.today-page { padding: clamp(2.5rem, 6vw, 5.5rem) 0 3rem; }
-.today-hero { min-height: 31rem; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(22rem, 0.9fr); align-items: center; gap: clamp(2rem, 6vw, 6rem); }
-.today-hero__copy h1 { max-width: 10ch; }
-.today-hero__date { margin-top: 1.25rem; color: var(--text-secondary); font-size: 0.9rem; }
-.cycle-context { margin-top: 1.7rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.65rem; color: var(--text-muted); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
-.cycle-context i { width: 2px; height: 2px; border-radius: 50%; background: var(--text-dim-25); }
-.hero-date-control { margin-top: 2.25rem; display: flex; align-items: center; gap: 0.65rem; }
-.hero-date-control input, .hero-date-control button { min-height: 2.8rem; border: 1px solid var(--input-border); border-radius: 999px; background: var(--input-bg); color: var(--input-text); color-scheme: var(--color-scheme); padding: 0 1rem; }
-.hero-date-control button { cursor: pointer; color: var(--solar-400); border-color: var(--border-accent); }
-.today-orbit { width: min(100%, 25rem); aspect-ratio: 1; justify-self: center; position: relative; display: grid; place-items: center; }
-.today-orbit::before { content: ""; position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--cycle-accent) 9%, transparent), transparent 66%); filter: blur(8px); }
-.today-orbit__halo { position: absolute; inset: 7%; border: 1px solid color-mix(in srgb, var(--cycle-accent) 34%, transparent); border-radius: 50%; box-shadow: inset 0 0 60px color-mix(in srgb, var(--cycle-accent) 5%, transparent), 0 0 60px color-mix(in srgb, var(--cycle-accent) 8%, transparent); }
-.today-orbit__halo::before, .today-orbit__halo::after { content: ""; position: absolute; border-radius: 50%; border: 1px solid var(--border-subtle); }
-.today-orbit__halo::before { inset: 11%; }
-.today-orbit__halo::after { inset: -7%; border-style: dashed; opacity: 0.5; }
-.today-orbit__halo > span { position: absolute; inset: -0.25rem 50% 50%; transform-origin: 50% 100%; }
-.today-orbit__halo > span::before { content: ""; position: absolute; top: -0.15rem; left: -0.15rem; width: 0.3rem; height: 0.3rem; border-radius: 50%; background: var(--text-dim-25); }
-.today-orbit__progress { position: absolute; inset: -0.45rem 50% 50%; transform-origin: 50% 100%; transition: transform 800ms var(--ease-out); }
-.today-orbit__progress::before { content: ""; position: absolute; top: -0.35rem; left: -0.35rem; width: 0.7rem; height: 0.7rem; border: 3px solid var(--bg-deep); border-radius: 50%; background: var(--cycle-accent); box-shadow: 0 0 22px var(--cycle-accent); }
-.today-orbit__reading { width: 62%; text-align: center; position: relative; display: grid; justify-items: center; gap: 0.6rem; }
-.today-orbit__reading span, .today-orbit__reading small { color: var(--text-muted); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; }
-.today-orbit__reading strong { color: var(--cycle-accent); font: 600 clamp(1.05rem, 2vw, 1.35rem)/1.3 var(--font-display); }
-.today-orbit__caption { position: absolute; bottom: 0; color: var(--text-muted); font-size: 0.68rem; text-align: center; }
-.reading-section { margin-top: clamp(4rem, 8vw, 7rem); }
-.section-heading { margin-bottom: 1.6rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; }
-.section-heading h2 { font-size: clamp(2rem, 4vw, 3.25rem); }
-.section-heading .eyebrow { margin-bottom: 0.55rem; }
-.epoch-note { padding-bottom: 0.4rem; color: var(--text-muted); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.11em; }
-/* Celestial orrery — four clocks as floating orbit dials, no boxes. */
-.clock-constellation {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: start;
-  justify-items: center;
-  gap: clamp(1rem, 3vw, 2rem);
-  padding-block: clamp(1.5rem, 4vw, 3rem) 1rem;
-}
-.clock-constellation::before {
-  content: "";
-  position: absolute;
-  left: 3%;
-  right: 3%;
-  top: 46%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--text-dim-15) 14%, var(--text-dim-15) 86%, transparent);
-  pointer-events: none;
-}
-.celestial-dial { display: grid; justify-items: center; gap: 1rem; position: relative; }
-.celestial-dial--lg { --dial-size: clamp(15rem, 19vw, 19rem); }
-.celestial-dial--md { --dial-size: clamp(12.5rem, 15.5vw, 15.5rem); margin-top: 3.5rem; }
-.celestial-dial--sm { --dial-size: clamp(11rem, 13.5vw, 13.5rem); margin-top: 1.5rem; }
-.celestial-dial:nth-child(3) { margin-top: 6rem; }
-.celestial-dial__ring {
-  position: relative;
-  width: var(--dial-size);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-}
-.celestial-dial__ring::before {
-  content: "";
-  position: absolute;
-  inset: -12%;
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--dial-accent) 11%, transparent), transparent 68%);
-  pointer-events: none;
-}
-.celestial-dial__ring svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.celestial-dial__track { fill: none; stroke: var(--text-dim-15); stroke-width: 1; }
-.celestial-dial__inner { fill: none; stroke: var(--text-dim-10); stroke-width: 1; stroke-dasharray: 1 7; }
-.celestial-dial__orbit {
-  fill: none;
-  stroke: var(--dial-accent);
-  stroke-width: 2.25;
-  stroke-linecap: round;
-  transform: rotate(-90deg);
-  transform-origin: 50% 50%;
-  transition: stroke-dasharray 800ms var(--ease-out);
-}
-.celestial-dial__moon { fill: var(--dial-accent); }
-.celestial-dial__moon-glow { fill: var(--dial-accent); opacity: 0.18; }
-.celestial-dial__core { position: relative; width: 68%; display: grid; justify-items: center; gap: 0.55rem; text-align: center; }
-.celestial-dial__label { color: var(--text-muted); font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; }
-.celestial-dial__value { color: var(--text-primary); font: 600 clamp(0.95rem, 1.3vw, 1.2rem)/1.35 var(--font-display); overflow-wrap: anywhere; }
-.celestial-dial__caption { display: grid; justify-items: center; gap: 0.3rem; text-align: center; }
-.celestial-dial__badge { color: var(--dial-accent); font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; }
-.celestial-dial__detail { color: var(--text-muted); font-size: 0.7rem; }
-.timeline-section { margin-top: 1.25rem; padding: clamp(1.4rem, 4vw, 2.5rem); overflow: hidden; }
-.section-heading--compact { margin-bottom: 2.25rem; }
-.section-heading--compact h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); }
-.today-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: center; flex-wrap: wrap; gap: 0.7rem 1.5rem; color: var(--text-dim-25); font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.08em; }
-
-@media (max-width: 980px) {
-  .today-hero { grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.75fr); gap: 2rem; }
-}
-
-@media (max-width: 720px) {
-  .today-page { padding-top: 2.5rem; }
-  .today-hero { min-height: 0; grid-template-columns: 1fr; }
-  .today-orbit { width: min(88vw, 23rem); margin-top: 1rem; }
-  .section-heading { align-items: flex-start; flex-direction: column; gap: 0.4rem; }
-}
-
-@media (max-width: 520px) {
-  .hero-date-control { align-items: stretch; flex-direction: column; }
-  .hero-date-control input, .hero-date-control button { width: 100%; }
-  .timeline-section { overflow-x: auto; }
-  .today-footer { justify-content: flex-start; }
-}
-
-/* Today constellation board */
-.today-page {
-  padding-block: clamp(var(--space-xl), 7vw, var(--space-3xl)) var(--space-xl);
-}
+.today-page { padding-block: clamp(var(--space-lg), 5vw, var(--space-2xl)) var(--space-xl); }
 
 .today-hero {
-  min-height: 34rem;
-  grid-template-columns: minmax(0, 0.8fr) minmax(20rem, 1.2fr);
-  gap: clamp(var(--space-xl), 7vw, var(--space-3xl));
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.9fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(var(--space-xl), 6vw, var(--space-3xl));
 }
+.today-hero h1 { max-width: 11ch; text-wrap: balance; }
 
-.today-hero__copy h1 {
-  max-width: 9ch;
+/* One ring, one idea: the year. Right half breathes in, left half breathes out. */
+.year-ring { position: relative; width: min(100%, 30rem); justify-self: center; }
+.year-ring svg { display: block; width: 100%; height: auto; }
+.year-ring__track { fill: none; stroke: var(--color-rule-2); stroke-width: 14; }
+.year-ring__arc {
+  fill: none;
+  stroke: var(--ring);
+  stroke-width: 14;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 200px 200px;
+  transition: stroke-dasharray var(--dur-long) var(--ease-out);
 }
-
-.today-hero__date,
-.cycle-context,
-.today-orbit__caption,
-.epoch-note {
-  color: var(--color-muted);
+.year-ring__tick { stroke: var(--color-paper); stroke-width: 3; }
+.year-ring__dot { fill: var(--color-paper); stroke: var(--ring); stroke-width: 4; }
+.year-ring__side {
+  fill: var(--color-neutral);
+  font: 700 0.8125rem var(--font-body);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-anchor: middle;
 }
+.year-ring__side.is-active { fill: var(--color-ink); }
+.year-ring figcaption { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; }
+.year-ring strong { font: 600 clamp(2.5rem, 6vw, 4rem)/1.2 var(--font-display); }
+.year-ring span { margin-top: var(--space-2xs); color: var(--color-ink-2); }
 
-.hero-date-control input,
-.hero-date-control button {
-  min-height: 2.75rem;
-  border-radius: var(--radius-input);
-  border-color: var(--color-rule);
-  background: var(--color-paper-3);
-  transition:
-    transform var(--dur-micro) var(--ease-out),
-    color var(--dur-micro) var(--ease-out),
-    border-color var(--dur-micro) var(--ease-out);
-}
+.today-lead { margin-top: var(--space-md); max-width: 34rem; color: var(--color-ink-2); }
 
-.hero-date-control button:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-.today-orbit {
-  width: min(100%, 32rem);
-}
-
-.today-orbit::before {
-  background: radial-gradient(circle, color-mix(in oklch, var(--cycle-accent) 9%, transparent), transparent 66%);
-  filter: none;
-}
-
-.today-orbit__halo {
-  border-color: color-mix(in oklch, var(--cycle-accent) 42%, transparent);
-  box-shadow: none;
-}
-
-.today-orbit__progress {
-  transition: transform var(--dur-long) var(--ease-out);
-}
-
-.today-orbit__progress::before {
-  border-color: var(--color-paper);
-  box-shadow: none;
-}
-
-.reading-section {
+/* Second instrument: the nine-hour day. Copy left, dial right, mirroring the hero. */
+.today-clock {
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.9fr);
   margin-top: var(--space-3xl);
 }
+.day-parts { margin-top: var(--space-lg); display: grid; gap: var(--space-xs); list-style: none; color: var(--color-muted); }
+.day-parts li { display: flex; align-items: baseline; gap: var(--space-2xs); }
+.day-parts li::before { content: ""; flex: none; width: 0.625rem; height: 0.625rem; border-radius: 50%; background: var(--ring); }
+.day-parts strong { color: var(--color-ink-2); }
+.day-parts .is-active, .day-parts .is-active strong { color: var(--color-ink); }
 
-.section-heading {
-  gap: var(--space-xl);
+/* The three faster cycles: name, sentence, progress line. */
+.cycle-bars { margin-top: var(--space-xl); display: grid; gap: var(--space-md); list-style: none; }
+.cycle-bars li { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); align-items: baseline; gap: var(--space-2xs) var(--space-sm); }
+.cycle-bars span { color: var(--color-muted); font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; }
+.cycle-bars p { font-size: var(--text-md); }
+.cycle-bars i {
+  grid-column: 2;
+  height: 0.375rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--ring) var(--p), var(--color-rule-2) var(--p));
 }
 
-.celestial-dial__label,
-.celestial-dial__detail {
-  color: var(--color-muted);
-}
-
-.celestial-dial__value {
+.hero-date-control { margin-top: var(--space-xl); display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2xs) var(--space-sm); }
+.hero-date-control input,
+.hero-date-control button {
+  padding: 0 var(--space-sm);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-pill);
+  background: var(--color-paper-3);
   color: var(--color-ink);
+  color-scheme: var(--color-scheme);
 }
+.hero-date-control button { cursor: pointer; border-color: var(--color-accent); color: var(--color-accent); }
+.hero-date-control small { color: var(--color-muted); font-size: var(--text-sm); }
 
-.timeline-section {
-  margin-top: var(--space-2xl);
-  padding: clamp(var(--space-md), 4vw, var(--space-xl)) 0 0;
-  border: 0;
-  border-block-start: var(--rule-hair) solid var(--color-rule-2);
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.today-footer {
-  justify-content: space-between;
-  gap: var(--space-md);
-  color: var(--color-muted);
-  white-space: nowrap;
-}
-
-@media (max-width: 61.25rem) {
-  .today-hero {
-    grid-template-columns: minmax(0, 0.9fr) minmax(18rem, 1.1fr);
-  }
-
-  .clock-constellation {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: var(--space-xl);
-  }
-
-  .clock-constellation::before {
-    display: none;
-  }
-
-  .celestial-dial--md,
-  .celestial-dial--sm,
-  .celestial-dial:nth-child(3) {
-    margin-top: 0;
-  }
-
-  .celestial-dial:nth-child(even) {
-    margin-top: var(--space-xl);
-  }
-}
-
-@media (max-width: 45rem) {
-  .today-hero {
-    min-height: 0;
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .today-orbit {
-    width: min(100%, 25rem);
-  }
-
-  .section-heading {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: var(--space-2xs);
-  }
-
-  .clock-constellation {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--space-lg);
-  }
-
-  .celestial-dial:nth-child(even) {
-    margin-top: 0;
-  }
-
-  .celestial-dial--lg,
-  .celestial-dial--md,
-  .celestial-dial--sm {
-    --dial-size: min(72vw, 16rem);
-  }
-
-  .today-footer {
-    align-items: flex-start;
-    flex-direction: column;
-    white-space: normal;
-  }
+@media (max-width: 53.75rem) {
+  .today-hero { grid-template-columns: minmax(0, 1fr); }
+  .year-ring { width: min(100%, 22rem); }
+  .today-clock { margin-top: var(--space-2xl); }
+  .today-clock .year-ring { order: -1; }
 }

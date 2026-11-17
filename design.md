@@ -9,12 +9,12 @@ Atmospheric: a cinematic celestial instrument whose readings remain the visual p
 ## Macrostructure family
 
 - App views: Map / Diagram. One dominant spatial instrument with a quieter readout or legend rail.
-- Today: asymmetric constellation board around one primary orbit.
+- Today: one ring for the solar year (breath in on the right half, out on the left) beside three sentence-and-bar rows for Earth month, Moon and day.
 - Compare: two balanced readings joined by one orbital axis.
 
 ## Theme
 
-Custom tuned cosmic blue/violet. Dark mode uses deep navy papers and luminous violet atmosphere; light mode uses pale celestial blue papers and dark violet signals. Cycle colours appear only when they encode data.
+Single light theme, Orchid Dawn: chromatic orchid and blush papers, aubergine ink, violet interaction signals, coral/amber atmosphere. No dark mode and no theme switch. Cycle colours appear only when they encode data.
 
 ## Typography
 
@@ -41,11 +41,11 @@ Custom tuned cosmic blue/violet. Dark mode uses deep navy papers and luminous vi
 
 ## Surface and atmosphere
 
-Opaque elevated instrument surfaces, sparse orbital rules, static star field, and two localized static nebulae. No glassmorphism, looping decorative motion, external imagery, or broad fade-up sequence.
+Opaque elevated instrument surfaces over static colour clouds. The screen reads in thirds: the left third is clear, the right two thirds carry a faint fingerprint whorl in the accent colours, faded in so it has no edge. No glassmorphism, external imagery, or broad fade-up sequence.
 
 ## What views must share
 
-Semantic tokens, fonts, focus ring, control states, opaque surfaces, diagram/readout split, mobile collapse, and theme persistence through `localStorage["theme"]`.
+Semantic tokens, fonts, focus ring, control states, opaque surfaces, diagram/readout split, mobile collapse.
 
 ## Exports
 
