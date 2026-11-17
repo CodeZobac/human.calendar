@@ -1,26 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "./index.css";
 import { getReading } from "./engine/reading";
 import { getDawnInfo, type DawnInfo } from "./services/geo";
 import TodayDashboard from "./components/TodayDashboard";
-import DayClockView from "./components/DayClockView";
-import YearWheel from "./components/YearWheel";
-import MonthTimeline from "./components/MonthTimeline";
-import MoonWheel from "./components/MoonWheel";
-import GregorianCompare from "./components/GregorianCompare";
 import TzolkinView, { type TzolkinMotion } from "./components/TzolkinView";
 import Dock from "./components/Dock";
+import Intro from "./components/Intro";
+import About from "./components/About";
+import { AnimatePresence } from "framer-motion";
 import { getTzolkinReading } from "./engine/tzolkin";
 import {
-  ArrowLeftRight,
-  Moon,
   Orbit,
-  RotateCw,
   Target,
 } from "lucide-react";
 
-type Tab = "today" | "nonary" | "moon" | "compare" | "tzolkin";
-
+type Tab = "today" | "tzolkin" | "about";
 function toInputDate(d: Date): string {
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -44,14 +38,14 @@ export default function App() {
   });
   const [tzolkinMotion, setTzolkinMotion] = useState<TzolkinMotion>("jump");
   const [liveNow, setLiveNow] = useState(() => new Date());
+  const [introOpen, setIntroOpen] = useState(true);
+  // Stable identity: Intro restarts its timer whenever onDone changes.
+  const closeIntro = useCallback(() => setIntroOpen(false), []);
   const [dawnInfo, setDawnInfo] = useState<DawnInfo | null>(null);
 
   const navItems = useMemo(
     () => [
-      { key: "today", label: "Today", icon: <Target /> },
-      { key: "nonary", label: "Nonary", icon: <RotateCw /> },
-      { key: "moon", label: "Moon", icon: <Moon /> },
-      { key: "compare", label: "Compare", icon: <ArrowLeftRight /> },
+      { key: "today", label: "Hoje", icon: <Target /> },
       { key: "tzolkin", label: "Tzolk’in", icon: <Orbit /> },
     ].map((item) => ({
       ...item,
@@ -116,23 +110,54 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
+    <>
+    <AnimatePresence>
+      {introOpen && <Intro onDone={closeIntro} />}
+    </AnimatePresence>
+    {/* Background: right two thirds carry a fingerprint whorl; the left third stays clear. */}
+    <svg className="fingerprint" aria-hidden="true" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <filter id="fp-warp" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.006" numOctaves="2" seed="7" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="70" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <linearGradient id="fp-ink" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" className="fingerprint__from" />
+          <stop offset="1" className="fingerprint__to" />
+        </linearGradient>
+      </defs>
+      <g filter="url(#fp-warp)" fill="none" stroke="url(#fp-ink)" strokeWidth="3">
+        {Array.from({ length: 40 }, (_, i) => (
+          <ellipse key={i} cx="440" cy="400" rx={8 + i * 15.5} ry={10 + i * 19} />
+        ))}
+      </g>
+    </svg>
+    <div className="app-shell" inert={introOpen}>
       <header className="site-header">
         <button
           type="button"
           className="brand-mark"
           onClick={() => setActiveTab("today")}
-          aria-label="Human Cycles home"
+          aria-label="+ Conexão, início"
         >
           <span className="brand-mark__orbit" aria-hidden="true"><span /></span>
           <span className="brand-mark__copy">
-            <strong>Human Cycles</strong>
-            <small>Nature, measured in nines</small>
+            <strong>+ Conexão</strong>
+            <small>A natureza, medida em noves</small>
           </span>
         </button>
 
         <Dock items={navItems} />
 
+        <div className="header-actions">
+        <button
+          type="button"
+          className={`about-link${activeTab === "about" ? " is-active" : ""}`}
+          onClick={() => setActiveTab("about")}
+        >
+          Sobre
+        </button>
+        </div>
       </header>
 
       <main className="app-main" id="main-content">
@@ -147,64 +172,6 @@ export default function App() {
           />
         )}
 
-        {activeTab === "nonary" && (
-          <section className="view-page nonary-page animate-in" aria-labelledby="nonary-title">
-            <div className="page-heading">
-              <span className="eyebrow">Earth rhythm</span>
-              <h1 id="nonary-title">The Nonary System</h1>
-              <p>Day, solar year, and Earth month read as one nested cycle.</p>
-            </div>
-
-            <div className="nonary-instruments">
-              <section className="nonary-instrument" aria-label="Day Clock">
-                <DayClockView dayClock={reading.dayClock} dawnInfo={dawnInfo} />
-              </section>
-
-              <section className="nonary-instrument" aria-label="Year Wheel">
-                <YearWheel solarYear={reading.solarYear} />
-              </section>
-
-              <section className="nonary-instrument nonary-instrument--month" aria-labelledby="month-timeline-title">
-                <div className="page-heading page-heading--instrument">
-                  <span className="eyebrow">Forty-point-five-eight days</span>
-                  <h2 id="month-timeline-title">Earth Month Timeline</h2>
-                  <p>A passage through expansion, pause, and contraction.</p>
-                </div>
-                <div className="editorial-panel timeline-panel">
-                  <MonthTimeline earthMonth={reading.earthMonth} />
-                </div>
-              </section>
-            </div>
-          </section>
-        )}
-
-        {activeTab === "moon" && (
-          <section className="view-page animate-in" aria-label="Moon Clock">
-            <MoonWheel moonClock={reading.moonClock} />
-          </section>
-        )}
-
-        {activeTab === "compare" && (
-          <section className="view-page animate-in">
-            <div className="page-heading page-heading--with-action">
-              <div>
-                <span className="eyebrow">Two ways of seeing</span>
-                <h1>Gregorian / Nonary</h1>
-                <p>The familiar calendar beside nature's repeating cycles.</p>
-              </div>
-              <DateControl
-                date={pickedDate}
-                isToday={isToday}
-                onChange={setPickedDate}
-                onReset={resetToday}
-              />
-            </div>
-            <div className="editorial-panel compare-panel">
-              <GregorianCompare reading={reading} selectedDate={pickedDate} />
-            </div>
-          </section>
-        )}
-
         {activeTab === "tzolkin" && (
           <TzolkinView
             reading={tzolkinReading}
@@ -217,32 +184,20 @@ export default function App() {
             onToday={resetTzolkinToday}
           />
         )}
+        {activeTab === "about" && <About />}
       </main>
-    </div>
-  );
-}
 
-function DateControl({
-  date,
-  isToday,
-  onChange,
-  onReset,
-}: {
-  date: Date;
-  isToday: boolean;
-  onChange: (date: Date) => void;
-  onReset: () => void;
-}) {
-  return (
-    <div className="date-control">
-      <label className="sr-only" htmlFor="comparison-date">Selected date</label>
-      <input
-        id="comparison-date"
-        type="date"
-        value={toInputDate(date)}
-        onChange={(event) => onChange(fromInputDate(event.target.value))}
-      />
-      {!isToday && <button type="button" onClick={onReset}>Today</button>}
+      <footer className="site-footer">
+        <a href="https://www.instagram.com/in.sintonia_/" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.2" cy="6.8" r="0.6" />
+          </svg>
+          <span className="sr-only">Instagram: </span>in.sintonia_
+        </a>
+      </footer>
     </div>
+    </>
   );
 }

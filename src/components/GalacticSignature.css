@@ -26,7 +26,7 @@
   display: block;
   margin-bottom: 0.9rem;
   color: var(--text-muted);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -123,7 +123,7 @@
 .galactic-moon .galactic-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .galactic-facts dt {
   color: var(--text-muted);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -170,7 +170,7 @@
 }
 .galactic-oracle__role {
   color: var(--text-muted);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;

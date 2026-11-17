@@ -1,0 +1,79 @@
+.intro {
+  position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 1.5rem;
+  overflow-y: auto;
+  background:
+    radial-gradient(circle at 25% 20%, var(--nebula-violet), transparent 38rem),
+    radial-gradient(circle at 80% 85%, var(--nebula-amber), transparent 30rem),
+    var(--color-paper);
+}
+
+/* One element from start to finish: the circle fades, the word unfolds, and the centred
+   row pushes the "+" left on its own. Sizes are in em so circle, plus and word scale together. */
+.intro__mark {
+  display: flex; align-items: center; justify-content: center; padding: 1em;
+  border: 0; background: none; cursor: pointer;
+  font: 600 clamp(3rem, 10vw, 5rem)/1.3 var(--font-display);
+  color: var(--color-accent-ink);
+  transition: color 0.8s var(--ease-in-out);
+}
+.intro__mark:active { transform: none; }
+.intro__mark:focus-visible { outline: none; }
+.intro__mark:focus-visible .intro__plus::before { outline: var(--rule-fine) solid var(--color-focus); outline-offset: 4px; }
+.intro__mark.is-open { color: var(--color-accent); cursor: default; }
+
+.intro__plus { position: relative; flex: none; width: 0.5em; height: 0.5em; }
+.intro__plus::before, .intro__plus::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 1.5em; height: 1.5em; margin: -0.75em;
+  border-radius: 50%; transition: opacity 0.7s var(--ease-out), transform 0.9s var(--ease-out);
+}
+.intro__plus::before {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-solar));
+  box-shadow: 0 0 4rem -0.5rem var(--color-accent);
+}
+.intro__plus::after { border: 1px solid var(--color-accent); animation: intro-pulse 3.2s var(--ease-out) infinite; }
+.is-open .intro__plus::before { opacity: 0; transform: scale(1.5); }
+.is-open .intro__plus::after { opacity: 0; animation: none; }
+@keyframes intro-pulse { from { opacity: 0.8; transform: scale(1); } to { opacity: 0; transform: scale(1.5); } }
+
+/* The "+" is drawn, not typed: a font glyph never sits on the exact centre of its box. */
+.intro__plus i { position: absolute; inset: 0; transition: transform var(--dur-long) var(--ease-out); }
+.intro__plus i::before, .intro__plus i::after {
+  content: ""; position: absolute; inset: 50% 0 auto; height: 0.06em; margin-top: -0.03em;
+  border-radius: var(--radius-pill); background: currentColor;
+}
+.intro__plus i::after { transform: rotate(90deg); }
+.intro__mark:not(.is-open):hover i { transform: rotate(90deg); }
+
+.intro__word {
+  display: grid; grid-template-columns: 0fr; opacity: 0;
+  transition: grid-template-columns 1s var(--ease-in-out) 0.15s, opacity 0.9s var(--ease-out) 0.45s;
+}
+.is-open .intro__word { grid-template-columns: 1fr; opacity: 1; }
+.intro__word span {
+  min-width: 0; overflow: hidden; padding-left: 0.1em;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-solar));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.about { max-width: 42rem; }
+.about__chapter { display: grid; gap: var(--space-sm); margin-top: var(--space-2xl); }
+.about__chapter p { color: var(--color-ink-2); font-size: 1.0625rem; line-height: 1.75; }
+
+/* The orbs breathe: in, hold, out, hold — the shape of the year and of each month. */
+.intro__breath { display: flex; align-items: center; gap: 0.6rem; height: 5rem; margin-bottom: var(--space-xs); }
+.intro__breath i {
+  width: 4.5rem; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--color-solar), var(--color-accent));
+  box-shadow: 0 0 2rem -0.4rem var(--color-accent);
+  animation: intro-breathe 8s var(--ease-in-out) infinite;
+}
+.intro__breath i:not(:only-child) { width: 1.5rem; }
+@keyframes intro-breathe {
+  0%, 100% { transform: scale(0.45); opacity: 0.45; }
+  45%, 55% { transform: scale(1); opacity: 1; }
+  95% { transform: scale(0.45); opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro__plus::after, .intro__breath i { animation: none; }
+}

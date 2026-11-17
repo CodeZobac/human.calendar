@@ -33,11 +33,11 @@ export default function TzolkinWheel({ reading }: TzolkinWheelProps) {
   return (
     <svg viewBox="0 0 650 390" role="img" aria-labelledby="tz-wheel-title tz-wheel-desc">
       <title id="tz-wheel-title">
-        {`${reading.tone} ${reading.signName}, day ${reading.position} of 260`}
+        {`${reading.tone} ${reading.signName}, dia ${reading.position} de 260`}
       </title>
       <desc id="tz-wheel-desc">
-        Two meshed wheels: thirteen number teeth engage twenty day-sign notches. The active
-        coefficient tooth sits inside the active sign notch at the glowing contact point.
+        Duas rodas engrenadas: treze dentes numerados encaixam em vinte entalhes de signos. O dente
+        do número ativo assenta no entalhe do signo ativo, no ponto de contacto iluminado.
       </desc>
       <defs>
         <radialGradient id="tzContactGlow">
